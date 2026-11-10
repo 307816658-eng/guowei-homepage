@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>郭伟 · 个人主页 | Guo Wei · Engineering & Vision</title>
+  <meta name="description" content="郭伟的官方个人主页。资深全栈架构师、智能体系统专家。以极致工程美学，重塑数字体验。">
+  <meta name="keywords" content="郭伟, Guo Wei, 全栈架构师, 智能体, Agentic AI, 个人主页">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="郭伟 · 个人主页 | Guo Wei">
+  <meta property="og:description" content="以极客匠心，构筑直觉科技。全栈架构与智能体工程体系。">
+  <meta property="og:type" content="website">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            apple: {
+              black: '#000000',
+              deep: '#070709',
+              dark: '#101013',
+              card: '#16161a',
+              cardHover: '#1c1c22',
+              border: 'rgba(255, 255, 255, 0.08)',
+              borderHover: 'rgba(255, 255, 255, 0.22)',
+              textPrimary: '#f5f5f7',
+              textSecondary: '#86868b',
+              accent: '#2997ff',
+              purple: '#af52de',
+              gold: '#e5a93c'
+            }
+          },
+          fontFamily: {
+            apple: [
+              '-apple-system',
+              'BlinkMacSystemFont',
+              '"SF Pro Display"',
+              '"SF Pro Text"',
+              '"Helvetica Neue"',
+              '"PingFang SC"',
+              '"Hiragino Sans GB"',
+              '"Microsoft YaHei"',
+              'sans-serif'
+            ]
+          },
+          animation: {
+            'glow-pulse': 'glowPulse 6s ease-in-out infinite',
+            'float': 'floatSlow 8s ease-in-out infinite',
+          },
+          keyframes: {
+            glowPulse: {
+              '0%, 100%': { opacity: '0.3', transform: 'scale(1)' },
+              '50%': { opacity: '0.6', transform: 'scale(1.08)' }
+            },
+            floatSlow: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-12px)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* 苹果特有的平滑抗锯齿与排版细节 */
+    * {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      background-color: #000000;
+      color: #f5f5f7;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      overflow-x: hidden;
+      touch-action: manipulation;
+    }
+
+    /* iOS 底部安全区域适配 */
+    .safe-bottom {
+      padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
+    }
+    .safe-top {
+      padding-top: max(1rem, env(safe-area-inset-top));
+    }
+
+    /* 苹果级磨砂毛玻璃 */
+    .glass-nav {
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .glass-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .glass-card:hover {
+      border-color: rgba(255, 255, 255, 0.22);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.8), 0 0 30px 2px rgba(41, 151, 255, 0.1);
+    }
+
+    /* 鼠标聚光灯高光效果 */
+    .spotlight-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: radial-gradient(400px circle at var(--mouse-x, -500px) var(--mouse-y, -500px), rgba(255, 255, 255, 0.2), transparent 40%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .spotlight-card:hover::before {
+      opacity: 1;
+    }
+
+    /* 苹果官网标志性的渐变文字 */
+    .apple-gradient-text {
+      background: linear-gradient(180deg, #ffffff 0%, #a1a1a6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .apple-gradient-blue {
+      background: linear-gradient(135deg, #2997ff 0%, #68b8ff 50%, #99cfff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .apple-gradient-purple {
+      background: linear-gradient(135deg, #af52de 0%, #d580ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* 苹果官网胶囊按钮质感 */
+    .apple-btn-primary {
+      background: #ffffff;
+      color: #000000;
+      font-weight: 500;
+      border-radius: 9999px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 14px 0 rgba(255, 255, 255, 0.2);
+    }
+    .apple-btn-primary:hover {
+      background: #e8e8ed;
+      transform: scale(1.02);
+      box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+    }
+
+    .apple-btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: #f5f5f7;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(12px);
+      border-radius: 9999px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .apple-btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.16);
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: scale(1.02);
+    }
+
+    /* 隐藏滚动条但保留功能 */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="selection:bg-blue-600 selection:text-white">
+
+  <!-- 背景动态柔光光晕 (Ambient Glow Orbs) -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div class="absolute -top-[20%] left-1/2 -translate-x-1/2 w-[700px] h-[700px] md:w-[900px] md:h-[900px] bg-gradient-to-br from-blue-600/15 via-purple-600/10 to-transparent rounded-full blur-[140px] animate-glow-pulse"></div>
+    <div class="absolute top-[50%] -left-[200px] w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[120px] animate-float"></div>
+    <div class="absolute top-[75%] -right-[200px] w-[600px] h-[600px] bg-purple-600/10 rounded-full blur-[150px] animate-glow-pulse" style="animation-delay: -3s;"></div>
+  </div>
+
+  <!-- 顶部导航条 (Apple Glass Navbar) -->
+  <header class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-5 h-14 md:h-16 flex items-center justify-between">
+      <!-- 标志 Logo -->
+      <a href="#" class="flex items-center space-x-3 group">
+        <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-600 via-indigo-500 to-purple-500 p-[1px] shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform duration-300">
+          <div class="w-full h-full bg-black rounded-full flex items-center justify-center">
+            <span class="text-xs font-bold tracking-wider text-white">GW</span>
+          </div>
+        </div>
+        <span class="text-sm font-semibold tracking-tight text-white/90 group-hover:text-white transition-colors">郭伟 · Guo Wei</span>
+      </a>
+
+      <!-- 桌面端菜单 (Desktop Nav) -->
+      <nav class="hidden md:flex items-center space-x-8 text-xs font-normal text-white/70">
+        <a href="#overview" class="hover:text-white transition-colors">概览</a>
+        <a href="#matrix" class="hover:text-white transition-colors">能力矩阵</a>
+        <a href="#projects" class="hover:text-white transition-colors">代表作品</a>
+        <a href="#timeline" class="hover:text-white transition-colors">历程</a>
+        <a href="#philosophy" class="hover:text-white transition-colors">理念</a>
+      </nav>
+
+      <!-- 快速联络与移动端开关 -->
+      <div class="flex items-center space-x-3">
+        <button onclick="openContactModal()" class="hidden sm:inline-flex items-center px-4 py-1.5 text-xs font-medium apple-btn-primary">
+          即刻联络
+          <svg class="w-3.5 h-3.5 ml-1 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+
+        <!-- 移动端汉堡按钮 -->
+        <button id="mobileMenuBtn" aria-label="打开菜单" class="md:hidden p-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition-colors focus:outline-none">
+          <svg id="menuIcon" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg id="closeIcon" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- 移动端全屏展开菜单 (iOS Style Mobile Overlay) -->
+    <div id="mobileMenu" class="md:hidden hidden px-6 pt-3 pb-8 glass-nav border-t border-white/5 space-y-4 text-base font-medium">
+      <a href="#overview" class="block py-2 text-white/80 hover:text-white border-b border-white/5 mobile-nav-link">概览 Overview</a>
+      <a href="#matrix" class="block py-2 text-white/80 hover:text-white border-b border-white/5 mobile-nav-link">核心矩阵 Capabilities</a>
+      <a href="#projects" class="block py-2 text-white/80 hover:text-white border-b border-white/5 mobile-nav-link">代表作品 Selected Works</a>
+      <a href="#timeline" class="block py-2 text-white/80 hover:text-white border-b border-white/5 mobile-nav-link">印记历程 Timeline</a>
+      <a href="#philosophy" class="block py-2 text-white/80 hover:text-white border-b border-white/5 mobile-nav-link">工程哲学 Philosophy</a>
+      <div class="pt-2">
+        <button onclick="openContactModal(); closeMobileMenu();" class="w-full py-3 text-center text-sm font-semibold apple-btn-primary">
+          即刻联络 / Connect
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主体容器 -->
+  <main class="relative z-10 pt-24 md:pt-32 pb-20">
+
+    <!-- ==================== HERO SECTION (苹果式震撼主屏) ==================== -->
+    <section id="overview" class="max-w-5xl mx-auto px-6 text-center pt-8 md:pt-16 pb-16 md:pb-24">
+      <!-- 动态状态标签 -->
+      <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-white/[0.05] border border-white/10 mb-8 backdrop-blur-md">
+        <span class="flex h-2 w-2 relative">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+        </span>
+        <span class="text-xs font-normal text-white/80 tracking-wide">全栈架构师 · 智能体与大模型工程</span>
+      </div>
+
+      <!-- 醒目主标题与姓名 -->
+      <h1 class="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6">
+        <span class="block apple-gradient-text">郭伟</span>
+        <span class="block text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold mt-3 text-white/90">
+          以极客匠心，构筑<span class="apple-gradient-blue">直觉科技</span>
+        </span>
+      </h1>
+
+      <!-- 导语 -->
+      <p class="max-w-2xl mx-auto text-base sm:text-lg md:text-xl text-white/60 leading-relaxed font-light mb-10 px-4">
+        深耕 AI 智能体体系架构、云原生全球边缘交付与高品味人机交互。<br class="hidden sm:inline">
+        在复杂的技术深海中，用纯粹代码提炼极致直觉的工业之美。
+      </p>
+
+      <!-- 双行动按钮 -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 px-4">
+        <a href="#projects" class="w-full sm:w-auto px-8 py-3.5 text-sm font-medium apple-btn-primary flex items-center justify-center space-x-2">
+          <span>探索代表作品</span>
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </a>
+        <button onclick="openContactModal()" class="w-full sm:w-auto px-8 py-3.5 text-sm font-medium apple-btn-secondary flex items-center justify-center space-x-2">
+          <span>探讨潜在合作</span>
+          <svg class="w-4 h-4 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- 核心指标数据墙 (Stats Row) -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mt-20 pt-10 border-t border-white/10">
+        <div class="p-4 text-center">
+          <div class="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-1">10<span class="text-blue-400 font-light">+</span></div>
+          <div class="text-xs text-white/50 tracking-wider">年全栈深耕积淀</div>
+        </div>
+        <div class="p-4 text-center">
+          <div class="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-1">100<span class="text-blue-400 font-light">%</span></div>
+          <div class="text-xs text-white/50 tracking-wider">全自动 CI/CD 闭环</div>
+        </div>
+        <div class="p-4 text-center">
+          <div class="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-1">99.99<span class="text-blue-400 font-light">%</span></div>
+          <div class="text-xs text-white/50 tracking-wider">生产级高可用架构</div>
+        </div>
+        <div class="p-4 text-center">
+          <div class="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-1">毫秒级</div>
+          <div class="text-xs text-white/50 tracking-wider">全球边缘 CDN 响应</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== BENTO GRID MATRIX (便当盒能力矩阵) ==================== -->
+    <section id="matrix" class="max-w-6xl mx-auto px-6 py-16">
+      <div class="text-center max-w-2xl mx-auto mb-14">
+        <h2 class="text-xs font-semibold tracking-widest text-blue-400 uppercase mb-3">Capabilities Matrix</h2>
+        <p class="text-3xl sm:text-4xl font-bold tracking-tight apple-gradient-text">核心矩阵与专业版图</p>
+        <p class="text-sm text-white/60 mt-3 font-light">全栈架构不只是技术的罗列，更是对系统确定性与美学边界的绝对掌控。</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <!-- Bento Card 1: 跨 2 列 (智能体与大模型工程) -->
+        <div class="md:col-span-2 rounded-3xl p-8 glass-card spotlight-card flex flex-col justify-between min-h-[340px]">
+          <div>
+            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-medium mb-6">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              <span>Agentic Systems & LLM Architecture</span>
+            </div>
+            <h3 class="text-2xl sm:text-3xl font-bold text-white mb-4">前沿智能体系统与工作流编排</h3>
+            <p class="text-sm sm:text-base text-white/70 leading-relaxed font-light mb-6">
+              构建基于深度思考（Deep Reasoning）的多智能体协作集群、自主工具链调用（Tool Use / Function Calling）与百万级上下文记忆检索体系。让大模型从纸上谈兵走向高稳健性的生产级闭环。
+            </p>
+          </div>
+
+          <!-- 模拟运行状态小终端 -->
+          <div class="rounded-xl bg-black/60 border border-white/10 p-4 font-mono text-xs text-white/80 shadow-inner">
+            <div class="flex items-center space-x-2 pb-2.5 border-b border-white/10 mb-2.5">
+              <div class="w-2.5 h-2.5 rounded-full bg-red-500/80"></div>
+              <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></div>
+              <div class="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></div>
+              <span class="text-[10px] text-white/40 ml-2">agent_executor.sh — status: active</span>
+            </div>
+            <div class="space-y-1">
+              <p class="text-emerald-400">✓ Context Window: 1,048,576 tokens loaded (NIAH: 100%)</p>
+              <p class="text-blue-300">⚡ Pipeline: GitHub Webhook ➔ Cloudflare Pages CDN (18ms)</p>
+              <p class="text-white/50">➜ Ready for continuous autonomous deployment.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bento Card 2: 单列 (云原生全球边缘) -->
+        <div class="rounded-3xl p-8 glass-card spotlight-card flex flex-col justify-between min-h-[340px]">
+          <div>
+            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs font-medium mb-6">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064" />
+              </svg>
+              <span>Cloud & Edge Infrastructure</span>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-4">云原生与全球边缘交付</h3>
+            <p class="text-sm text-white/70 leading-relaxed font-light">
+              深入依托 Cloudflare 全球 300+ 边缘节点、Serverless 极速服务与无状态高弹性架构。代码一次提交，全球毫秒级同步触达。
+            </p>
+          </div>
+          <div class="pt-6 border-t border-white/5 flex items-center justify-between text-xs text-white/50">
+            <span>全球边缘可用率</span>
+            <span class="text-white font-mono font-medium">99.999% SLA</span>
+          </div>
+        </div>
+
+        <!-- Bento Card 3: 单列 (极致交互与苹果审美) -->
+        <div class="rounded-3xl p-8 glass-card spotlight-card flex flex-col justify-between min-h-[340px]">
+          <div>
+            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-medium mb-6">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+              </svg>
+              <span>Pixel-Perfect Design</span>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-4">苹果级像素审美与交互</h3>
+            <p class="text-sm text-white/70 leading-relaxed font-light">
+              克制、深邃、丝滑。尊重人机界面的物理惯性，打造兼顾视网膜级高分辨率与 120Hz 拟物微动效的沉浸式感官享受。
+            </p>
+          </div>
+          <div class="pt-6 border-t border-white/5 flex items-center justify-between text-xs text-white/50">
+            <span>触觉与响应</span>
+            <span class="text-white font-mono font-medium">Fluid 120 FPS</span>
+          </div>
+        </div>
+
+        <!-- Bento Card 4: 跨 2 列 (全栈技术谱系) -->
+        <div class="md:col-span-2 rounded-3xl p-8 glass-card spotlight-card flex flex-col justify-between min-h-[340px]">
+          <div>
+            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs font-medium mb-6">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+              </svg>
+              <span>Full-Stack Mastery</span>
+            </div>
+            <h3 class="text-2xl sm:text-3xl font-bold text-white mb-4">全栈工程化技术图谱</h3>
+            <p class="text-sm sm:text-base text-white/70 leading-relaxed font-light mb-6">
+              横跨现代前端响应式系统、高性能异步后端、微服务架构以及安全加密通道。以坚实的工程规范支撑庞大业务的从零到一。
+            </p>
+          </div>
+
+          <!-- 交互式技术标签簇 -->
+          <div class="flex flex-wrap gap-2.5">
+            <span class="px-3.5 py-1.5 rounded-full bg-white/[0.06] border border-white/10 text-xs text-white hover:border-blue-400 hover:text-blue-300 transition-colors cursor-default">TypeScript / ECMAScript</span>
+            <span class="px-3.5 py-1.5 rounded-full bg-white/[0.06] border border-white/10 text-xs text-white hover:border-blue-400 hover:text-blue-300 transition-colors cursor-default">Python / PyTorch</span>
+            <span class="px-3.5 py-1.5 rounded-full bg-white/[0.06] border border-white/10 text-xs text-white hover:border-blue-400 hover:text-blue-300 transition-colors cursor-default">Cloudflare Workers / Pages</span>
+            <span class="px-3.5 py-1.5 rounded-full bg-white/[0.06] border border-white/10 text-xs text-white hover:border-blue-400 hover:text-blue-300 transition-colors cursor-default">Git / GitHub Actions CI/CD</span>
+            <span class="px-3.5 py-1.5 rounded-full bg-white/[0.06] border border-white/10 text-xs text-white hover:border-blue-400 hover:text-blue-300 transition-colors cursor-default">Tailwind CSS / Canvas 2D</span>
+            <span class="px-3.5 py-1.5 rounded-full bg-white/[0.06] border border-white/10 text-xs text-white hover:border-blue-400 hover:text-blue-300 transition-colors cursor-default">Linux / macOS Darwin</span>
+            <span class="px-3.5 py-1.5 rounded-full bg-white/[0.06] border border-white/10 text-xs text-white hover:border-blue-400 hover:text-blue-300 transition-colors cursor-default">RESTful / WebSocket / WebRTC</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== SELECTED PROJECTS (精选代表作品) ==================== -->
+    <section id="projects" class="max-w-6xl mx-auto px-6 py-16">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+        <div>
+          <h2 class="text-xs font-semibold tracking-widest text-blue-400 uppercase mb-3">Featured Creations</h2>
+          <p class="text-3xl sm:text-4xl font-bold tracking-tight apple-gradient-text">代表作品与生产级项目</p>
+        </div>
+        <!-- 筛选过滤器 -->
+        <div class="flex items-center space-x-2 mt-6 md:mt-0 overflow-x-auto no-scrollbar pb-2 md:pb-0">
+          <button onclick="filterProjects('all')" class="filter-btn active px-4 py-1.5 rounded-full text-xs font-medium transition-all bg-white text-black" data-filter="all">全部</button>
+          <button onclick="filterProjects('ai')" class="filter-btn px-4 py-1.5 rounded-full text-xs font-medium transition-all bg-white/5 text-white/70 hover:text-white" data-filter="ai">智能体 AI</button>
+          <button onclick="filterProjects('cloud')" class="filter-btn px-4 py-1.5 rounded-full text-xs font-medium transition-all bg-white/5 text-white/70 hover:text-white" data-filter="cloud">全球云端</button>
+          <button onclick="filterProjects('tools')" class="filter-btn px-4 py-1.5 rounded-full text-xs font-medium transition-all bg-white/5 text-white/70 hover:text-white" data-filter="tools">工程工具</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+        <!-- 项目卡片 1 -->
+        <div class="project-card group rounded-3xl p-6 sm:p-8 glass-card spotlight-card flex flex-col justify-between" data-category="ai cloud">
+          <div>
+            <!-- 仿 macOS 顶栏 -->
+            <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-6">
+              <div class="flex items-center space-x-2">
+                <span class="w-3 h-3 rounded-full bg-[#ff5f56]"></span>
+                <span class="w-3 h-3 rounded-full bg-[#ffbd2e]"></span>
+                <span class="w-3 h-3 rounded-full bg-[#27c93f]"></span>
+              </div>
+              <span class="text-xs text-white/40 font-mono">agentic-core.v1</span>
+            </div>
+
+            <div class="flex items-center space-x-2 mb-3">
+              <span class="px-2.5 py-0.5 rounded text-[11px] font-medium bg-blue-500/20 text-blue-300">Agentic AI</span>
+              <span class="px-2.5 py-0.5 rounded text-[11px] font-medium bg-white/10 text-white/70">1M Context</span>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-blue-300 transition-colors">AI 智能中枢与自主运维流</h3>
+            <p class="text-sm text-white/70 leading-relaxed font-light mb-6">
+              深度融合百万级超长上下文与自主思维链（Thinking Process），实现需求到代码编写、本地静态检查及秒级自动化上线的全链路闭环，彻底解放生产力。
+            </p>
+          </div>
+
+          <div class="pt-6 border-t border-white/5 flex items-center justify-between">
+            <span class="text-xs text-white/40 font-mono">Status: Production Live</span>
+            <button onclick="openProjectModal('AI 智能中枢与自主运维流', '以 Gemini 3.8 Flash 与前沿 Agent 体系为基础，构建了全自动化开发与全球部署流水线。具备极低延迟工具调用、代码重构把控与毫秒级全球 CDN 部署能力。', ['Gemini API', 'Node/Python', 'Cloudflare Pages', 'GitHub App'])" class="text-xs font-medium text-blue-400 group-hover:text-blue-300 flex items-center space-x-1">
+              <span>查看架构解析</span>
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- 项目卡片 2 -->
+        <div class="project-card group rounded-3xl p-6 sm:p-8 glass-card spotlight-card flex flex-col justify-between" data-category="cloud">
+          <div>
+            <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-6">
+              <div class="flex items-center space-x-2">
+                <span class="w-3 h-3 rounded-full bg-[#ff5f56]"></span>
+                <span class="w-3 h-3 rounded-full bg-[#ffbd2e]"></span>
+                <span class="w-3 h-3 rounded-full bg-[#27c93f]"></span>
+              </div>
+              <span class="text-xs text-white/40 font-mono">edge-delivery.cloudflare</span>
+            </div>
+
+            <div class="flex items-center space-x-2 mb-3">
+              <span class="px-2.5 py-0.5 rounded text-[11px] font-medium bg-purple-500/20 text-purple-300">Global Edge</span>
+              <span class="px-2.5 py-0.5 rounded text-[11px] font-medium bg-white/10 text-white/70">300+ PoPs</span>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-purple-300 transition-colors">全球边缘静态加速与服务网格</h3>
+            <p class="text-sm text-white/70 leading-relaxed font-light mb-6">
+              针对跨国访问与高频交互场景，打造基于 Cloudflare Pages 边缘计算的极简静态交付架构。具备毫秒级冷启动、自适应 SSL 证书与全自动化多环境部署能力。
+            </p>
+          </div>
+
+          <div class="pt-6 border-t border-white/5 flex items-center justify-between">
+            <span class="text-xs text-white/40 font-mono">Latency: &lt; 20ms Global</span>
+            <button onclick="openProjectModal('全球边缘静态加速与服务网格', '采用 Edge CDN 缓存穿透优化与增量预热机制，确保全球各地用户秒级无障碍访问，同时消除传统单点服务器宕机风险。', ['Cloudflare Pages', 'DNS Anycast', 'Zero Trust', 'WAF'])" class="text-xs font-medium text-purple-400 group-hover:text-purple-300 flex items-center space-x-1">
+              <span>查看架构解析</span>
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- 项目卡片 3 -->
+        <div class="project-card group rounded-3xl p-6 sm:p-8 glass-card spotlight-card flex flex-col justify-between" data-category="ai tools">
+          <div>
+            <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-6">
+              <div class="flex items-center space-x-2">
+                <span class="w-3 h-3 rounded-full bg-[#ff5f56]"></span>
+                <span class="w-3 h-3 rounded-full bg-[#ffbd2e]"></span>
+                <span class="w-3 h-3 rounded-full bg-[#27c93f]"></span>
+              </div>
+              <span class="text-xs text-white/40 font-mono">audio-omni.runtime</span>
+            </div>
+
+            <div class="flex items-center space-x-2 mb-3">
+              <span class="px-2.5 py-0.5 rounded text-[11px] font-medium bg-amber-500/20 text-amber-300">Omni Multimodal</span>
+              <span class="px-2.5 py-0.5 rounded text-[11px] font-medium bg-white/10 text-white/70">Native Audio</span>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-amber-300 transition-colors">原生全模态端到端语音交互台</h3>
+            <p class="text-sm text-white/70 leading-relaxed font-light mb-6">
+              摒弃传统 ASR 转录+文本大模型+TTS 拼接的串联方案，直接在底层理解音频波形输入，实现极度自然、毫无卡顿停顿的人机实时对白交互。
+            </p>
+          </div>
+
+          <div class="pt-6 border-t border-white/5 flex items-center justify-between">
+            <span class="text-xs text-white/40 font-mono">Mode: End-to-End</span>
+            <button onclick="openProjectModal('原生全模态端到端语音交互台', '原生音频输入架构消除了级联误差与多阶段延迟，带来媲美真人面对面交谈的沉浸感与毫秒级反馈速度。', ['WebAudio API', 'Gemini Omni', 'WebSocket', 'Tailwind'])" class="text-xs font-medium text-amber-400 group-hover:text-amber-300 flex items-center space-x-1">
+              <span>查看架构解析</span>
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- 项目卡片 4 -->
+        <div class="project-card group rounded-3xl p-6 sm:p-8 glass-card spotlight-card flex flex-col justify-between" data-category="tools">
+          <div>
+            <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-6">
+              <div class="flex items-center space-x-2">
+                <span class="w-3 h-3 rounded-full bg-[#ff5f56]"></span>
+                <span class="w-3 h-3 rounded-full bg-[#ffbd2e]"></span>
+                <span class="w-3 h-3 rounded-full bg-[#27c93f]"></span>
+              </div>
+              <span class="text-xs text-white/40 font-mono">zero-friction.ops</span>
+            </div>
+
+            <div class="flex items-center space-x-2 mb-3">
+              <span class="px-2.5 py-0.5 rounded text-[11px] font-medium bg-emerald-500/20 text-emerald-300">Developer UX</span>
+              <span class="px-2.5 py-0.5 rounded text-[11px] font-medium bg-white/10 text-white/70">SSH Ed25519</span>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-emerald-300 transition-colors">零摩擦免密开发与灾备工作流</h3>
+            <p class="text-sm text-white/70 leading-relaxed font-light mb-6">
+              通过高强度 Ed25519 硬件密钥身份绑定、标准化 SOP 手册沉淀与自动化换机恢复架构，实现“免敲终端、省心交付、全闭环上线”的工业化研发范式。
+            </p>
+          </div>
+
+          <div class="pt-6 border-t border-white/5 flex items-center justify-between">
+            <span class="text-xs text-white/40 font-mono">Disaster Recovery: 2 mins</span>
+            <button onclick="openProjectModal('零摩擦免密开发与灾备工作流', '彻底抹平开发环境与生产环境的认知鸿沟。用户仅需一句自然语言下达，AI 自动完成从代码生成、测试、提交到全球 CDN 绑定的全部过程。', ['Git Ed25519', 'CI/CD SOP', 'Cloudflare Webhooks'])" class="text-xs font-medium text-emerald-400 group-hover:text-emerald-300 flex items-center space-x-1">
+              <span>查看架构解析</span>
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== PHILOSOPHY (苹果风格言与工程哲学) ==================== -->
+    <section id="philosophy" class="max-w-4xl mx-auto px-6 py-20 text-center">
+      <div class="rounded-3xl p-10 md:p-16 glass-card border border-white/10 relative overflow-hidden">
+        <!-- 装饰性苹果大引号 -->
+        <span class="absolute top-4 left-6 text-7xl font-serif text-white/[0.05] select-none">“</span>
+        
+        <p class="text-xs font-semibold tracking-widest text-blue-400 uppercase mb-6">Design & Engineering Creed</p>
+        
+        <blockquote class="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-white leading-snug mb-8">
+          “真正的简洁从不意味着简陋，<br class="hidden sm:inline">
+          而是在错综复杂的架构深海中，<br class="hidden sm:inline">
+          提炼出直抵人心的纯粹与秩序。”
+        </blockquote>
+        
+        <div class="flex items-center justify-center space-x-3">
+          <div class="w-10 h-[1px] bg-white/20"></div>
+          <span class="text-sm font-medium tracking-wider text-white/80">郭伟 / Guo Wei</span>
+          <div class="w-10 h-[1px] bg-white/20"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TIMELINE (里程碑与印记) ==================== -->
+    <section id="timeline" class="max-w-4xl mx-auto px-6 py-16">
+      <div class="text-center max-w-xl mx-auto mb-14">
+        <h2 class="text-xs font-semibold tracking-widest text-blue-400 uppercase mb-3">Milestones</h2>
+        <p class="text-3xl sm:text-4xl font-bold tracking-tight apple-gradient-text">成长轨迹与工程印记</p>
+      </div>
+
+      <div class="relative border-l border-white/10 ml-4 md:ml-32 space-y-12 pl-8">
+        
+        <!-- Timeline Item 1 -->
+        <div class="relative group">
+          <div class="absolute -left-[41px] top-1.5 w-5 h-5 rounded-full bg-black border-2 border-blue-500 group-hover:scale-125 transition-transform duration-300">
+            <div class="w-2 h-2 rounded-full bg-blue-400 m-auto mt-1"></div>
+          </div>
+          <div class="text-xs font-mono text-blue-400 font-semibold mb-1">2026 · 至今</div>
+          <h3 class="text-xl font-bold text-white mb-2">领航智能体架构与前沿全自动交付体系</h3>
+          <p class="text-sm text-white/60 font-light leading-relaxed">
+            全面打通从多模态实时交互、自主决策思考（Extended Thinking）到 GitHub + Cloudflare 全球秒级上线的免运维全自动闭环。
+          </p>
+        </div>
+
+        <!-- Timeline Item 2 -->
+        <div class="relative group">
+          <div class="absolute -left-[41px] top-1.5 w-5 h-5 rounded-full bg-black border-2 border-purple-500 group-hover:scale-125 transition-transform duration-300">
+            <div class="w-2 h-2 rounded-full bg-purple-400 m-auto mt-1"></div>
+          </div>
+          <div class="text-xs font-mono text-purple-400 font-semibold mb-1">2024 — 2025</div>
+          <h3 class="text-xl font-bold text-white mb-2">构建分布式云原生与全球边缘服务矩阵</h3>
+          <p class="text-sm text-white/60 font-light leading-relaxed">
+            主导多套生产级高并发业务系统的边缘重构，将全球多地域访问延迟压制在 30ms 以内，服务可用性提升至 99.99%。
+          </p>
+        </div>
+
+        <!-- Timeline Item 3 -->
+        <div class="relative group">
+          <div class="absolute -left-[41px] top-1.5 w-5 h-5 rounded-full bg-black border-2 border-white/40 group-hover:scale-125 transition-transform duration-300">
+            <div class="w-2 h-2 rounded-full bg-white/60 m-auto mt-1"></div>
+          </div>
+          <div class="text-xs font-mono text-white/40 font-semibold mb-1">2021 — 2023</div>
+          <h3 class="text-xl font-bold text-white mb-2">全栈工程规范确立与高品质交互实验室</h3>
+          <p class="text-sm text-white/60 font-light leading-relaxed">
+            深耕人机交互设计系统（Design System），打磨极致响应式体验与微动效引擎，为数百万级终端用户提供流畅可靠的数字产品。
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== CONTACT SECTION (即刻联络 / 苹果风胶囊收尾) ==================== -->
+    <section id="contact" class="max-w-4xl mx-auto px-6 py-16">
+      <div class="rounded-3xl p-8 md:p-14 glass-card border border-white/10 text-center relative overflow-hidden">
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white mb-4">
+          开启下一程<span class="apple-gradient-blue">非凡探索</span>
+        </h2>
+        <p class="max-w-xl mx-auto text-sm sm:text-base text-white/60 font-light mb-8">
+          无论是前沿智能体方案、高可用系统重构，抑或是充满想象力的新项目合作，随时欢迎深入探讨。
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <!-- 复制邮箱按钮 -->
+          <button onclick="copyEmail()" class="w-full sm:w-auto px-8 py-3.5 apple-btn-primary flex items-center justify-center space-x-2 text-sm">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+            <span id="copyBtnText">复制工作邮箱</span>
+          </button>
+
+          <!-- 社交名片/快捷沟通 -->
+          <button onclick="openContactModal()" class="w-full sm:w-auto px-8 py-3.5 apple-btn-secondary flex items-center justify-center space-x-2 text-sm">
+            <svg class="w-4 h-4 text-white/70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+            <span>在线留言名片</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 底部页脚 (Apple Minimal Footer) -->
+  <footer class="border-t border-white/10 py-10 safe-bottom">
+    <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between text-xs text-white/40 space-y-4 sm:space-y-0">
+      <div class="flex items-center space-x-2">
+        <span>© 2026 郭伟 (Guo Wei)</span>
+        <span>·</span>
+        <span>保留所有权利</span>
+      </div>
+      <div class="flex items-center space-x-6">
+        <a href="#overview" class="hover:text-white transition-colors">回到顶部 ↑</a>
+        <a href="https://github.com/307816658-eng" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">GitHub</a>
+        <span class="text-white/20">Designed with Pure Rigor</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== 交互弹窗：项目详情 (Project Detail Modal) ==================== -->
+  <div id="projectModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl">
+    <div class="glass-card rounded-3xl max-w-lg w-full p-8 border border-white/20 shadow-2xl relative" onclick="event.stopPropagation()">
+      <button onclick="closeProjectModal()" class="absolute top-6 right-6 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white transition-colors">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <div class="text-xs font-semibold tracking-wider text-blue-400 uppercase mb-2">Project Case Study</div>
+      <h3 id="modalProjectTitle" class="text-2xl font-bold text-white mb-4">项目名称</h3>
+      <p id="modalProjectDesc" class="text-sm text-white/70 leading-relaxed font-light mb-6">项目详细描述信息。</p>
+      
+      <div class="mb-6">
+        <div class="text-xs text-white/40 mb-2">核心技术栈与架构实现：</div>
+        <div id="modalProjectTags" class="flex flex-wrap gap-2"></div>
+      </div>
+
+      <button onclick="closeProjectModal()" class="w-full py-2.5 rounded-full apple-btn-secondary text-xs font-medium">
+        关闭窗口
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== 交互弹窗：联系与留言 (Contact Modal) ==================== -->
+  <div id="contactModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl">
+    <div class="glass-card rounded-3xl max-w-md w-full p-8 border border-white/20 shadow-2xl relative" onclick="event.stopPropagation()">
+      <button onclick="closeContactModal()" class="absolute top-6 right-6 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white transition-colors">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <div class="text-xs font-semibold tracking-wider text-blue-400 uppercase mb-2">Get in Touch</div>
+      <h3 class="text-2xl font-bold text-white mb-2">与郭伟取得联络</h3>
+      <p class="text-xs text-white/60 mb-6">欢迎通过以下方式交流技术、探讨合作或交换灵感。</p>
+
+      <div class="space-y-4 mb-6">
+        <div class="p-3.5 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <span class="text-blue-400">📧</span>
+            <div>
+              <div class="text-[11px] text-white/40">电子邮件</div>
+              <div class="text-xs font-mono text-white/90">Guoweiaaa@163.com</div>
+            </div>
+          </div>
+          <button onclick="copyText('Guoweiaaa@163.com', '邮箱已复制到剪贴板！')" class="px-3 py-1 text-[11px] apple-btn-secondary">复制</button>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <span class="text-emerald-400">🐙</span>
+            <div>
+              <div class="text-[11px] text-white/40">GitHub</div>
+              <div class="text-xs font-mono text-white/90">@307816658-eng</div>
+            </div>
+          </div>
+          <a href="https://github.com/307816658-eng" target="_blank" rel="noopener noreferrer" class="px-3 py-1 text-[11px] apple-btn-secondary">访问</a>
+        </div>
+      </div>
+
+      <!-- 快速留言表单 -->
+      <form id="contactForm" onsubmit="handleMessageSubmit(event)" class="space-y-3">
+        <input type="text" id="senderName" required placeholder="您的称呼 / 团队" class="w-full px-4 py-2.5 rounded-xl bg-white/[0.05] border border-white/10 text-xs text-white placeholder-white/30 focus:outline-none focus:border-blue-500 transition-colors">
+        <textarea id="senderMsg" required rows="3" placeholder="简要描述您的合作诉求或想法..." class="w-full px-4 py-2.5 rounded-xl bg-white/[0.05] border border-white/10 text-xs text-white placeholder-white/30 focus:outline-none focus:border-blue-500 transition-colors resize-none"></textarea>
+        <button type="submit" class="w-full py-2.5 apple-btn-primary text-xs font-semibold">
+          发送留言
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 轻量 Toast 提示框 (Apple Capsule Toast) -->
+  <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 hidden px-5 py-2.5 rounded-full bg-white text-black text-xs font-medium shadow-2xl flex items-center space-x-2 transition-all duration-300">
+    <svg class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+    </svg>
+    <span id="toastMsg">已完成操作</span>
+  </div>
+
+  <!-- 交互逻辑 JavaScript -->
+  <script>
+    // 1. 移动端菜单控制
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const menuIcon = document.getElementById('menuIcon');
+    const closeIcon = document.getElementById('closeIcon');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      const isHidden = mobileMenu.classList.contains('hidden');
+      if (isHidden) {
+        mobileMenu.classList.remove('hidden');
+        menuIcon.classList.add('hidden');
+        closeIcon.classList.remove('hidden');
+      } else {
+        closeMobileMenu();
+      }
+    });
+
+    function closeMobileMenu() {
+      mobileMenu.classList.add('hidden');
+      menuIcon.classList.remove('hidden');
+      closeIcon.classList.add('hidden');
+    }
+
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+      link.addEventListener('click', closeMobileMenu);
+    });
+
+    // 2. 苹果风 Spotlight 鼠标高光跟随
+    document.querySelectorAll('.spotlight-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+      });
+    });
+
+    // 3. 项目分类筛选
+    function filterProjects(cat) {
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        if (btn.getAttribute('data-filter') === cat) {
+          btn.classList.add('bg-white', 'text-black');
+          btn.classList.remove('bg-white/5', 'text-white/70');
+        } else {
+          btn.classList.remove('bg-white', 'text-black');
+          btn.classList.add('bg-white/5', 'text-white/70');
+        }
+      });
+
+      document.querySelectorAll('.project-card').forEach(card => {
+        const cats = card.getAttribute('data-category').split(' ');
+        if (cat === 'all' || cats.includes(cat)) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    }
+
+    // 4. 项目详情弹窗
+    function openProjectModal(title, desc, tags) {
+      document.getElementById('modalProjectTitle').innerText = title;
+      document.getElementById('modalProjectDesc').innerText = desc;
+      const tagContainer = document.getElementById('modalProjectTags');
+      tagContainer.innerHTML = '';
+      tags.forEach(t => {
+        const span = document.createElement('span');
+        span.className = 'px-2.5 py-1 rounded bg-white/10 text-white/80 text-[11px] font-mono';
+        span.innerText = t;
+        tagContainer.appendChild(span);
+      });
+      document.getElementById('projectModal').classList.remove('hidden');
+    }
+
+    function closeProjectModal() {
+      document.getElementById('projectModal').classList.add('hidden');
+    }
+
+    // 5. 联络弹窗
+    function openContactModal() {
+      document.getElementById('contactModal').classList.remove('hidden');
+    }
+    function closeContactModal() {
+      document.getElementById('contactModal').classList.add('hidden');
+    }
+
+    // 点击蒙层背景关闭弹窗
+    document.getElementById('projectModal').addEventListener('click', closeProjectModal);
+    document.getElementById('contactModal').addEventListener('click', closeContactModal);
+
+    // 6. 复制邮箱与文本提示
+    function copyEmail() {
+      copyText('Guoweiaaa@163.com', '工作邮箱已复制到剪切板！');
+    }
+
+    function copyText(text, msg) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast(msg);
+      }).catch(() => {
+        showToast('复制成功：' + text);
+      });
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMsg').innerText = msg;
+      toast.classList.remove('hidden');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 3000);
+    }
+
+    // 7. 模拟留言提交
+    function handleMessageSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('senderName').value;
+      showToast(`感谢 ${name}，留言已记录，将尽快回复！`);
+      document.getElementById('contactForm').reset();
+      setTimeout(closeContactModal, 1200);
+    }
+
+    // 按 ESC 键关闭所有弹窗
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeProjectModal();
+        closeContactModal();
+        closeMobileMenu();
+      }
+    });
+  </script>
+</body>
+</html>
