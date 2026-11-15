@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>AI 智能体通用任务调度与协同管理工作台 | Task-Console</title>
+  <meta name="description" content="Antigravity 通用多智能体项目管理工作台 - 任意任务下达、智能角色拆解、严格质检打回与全链路过程审计看板">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8'
+            },
+            console: {
+              bg: '#0a0e17',
+              panel: '#111827',
+              card: '#161f33',
+              cardHover: '#1c2742',
+              border: '#1f293d',
+              borderAccent: '#374151'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* 自定义滚动条 */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0a0e17;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #232d42;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #374151;
+    }
+    .badge-pulse {
+      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+      animation: pulse-ring 2s infinite cubic-bezier(0.66, 0, 0, 1);
+    }
+    @keyframes pulse-ring {
+      to {
+        box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
+      }
+    }
+  </style>
+</head>
+<body class="bg-[#0a0e17] text-gray-100 min-h-screen flex flex-col font-sans selection:bg-blue-600 selection:text-white">
+
+  <!-- 顶部导航条 -->
+  <header class="sticky top-0 z-40 bg-[#0d1322]/90 backdrop-blur-md border-b border-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-blue-500/20">
+          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+          </svg>
+        </div>
+        <div>
+          <span class="text-base font-bold tracking-tight text-white">Antigravity Console</span>
+          <span class="ml-2 text-xs text-gray-400 font-normal">多智能体通用调度工作台 (形态 B)</span>
+        </div>
+      </div>
+
+      <!-- 右侧快捷链接与状态 -->
+      <div class="flex items-center space-x-4 text-xs">
+        <a href="/pm-hub" class="hidden sm:inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-gray-800/80 hover:bg-gray-700 text-gray-300 border border-gray-700 transition-colors">
+          <span>📱 查看业务交付原型</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        </a>
+        <div class="flex items-center space-x-2 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded-full font-mono">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 badge-pulse"></span>
+          <span>Agent 协同服务在线</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主体内容 -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+    <!-- 顶部总览大盘 (KPI) -->
+    <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-[#111827] border border-gray-800 rounded-2xl p-5">
+        <div class="text-xs text-gray-400 mb-1 flex items-center justify-between">
+          <span>待办与进行中任务</span>
+          <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        </div>
+        <div id="stat-active" class="text-2xl font-extrabold text-white">2 个</div>
+        <div class="text-[11px] text-blue-400 mt-1">乐乐/熊熊正在作业</div>
+      </div>
+
+      <div class="bg-[#111827] border border-amber-500/30 rounded-2xl p-5 bg-gradient-to-br from-amber-500/5 to-transparent">
+        <div class="text-xs text-amber-300 mb-1 flex items-center justify-between">
+          <span>累计质检打回重修</span>
+          <span class="text-xs font-mono font-bold text-amber-400">严格风控</span>
+        </div>
+        <div id="stat-revisions" class="text-2xl font-extrabold text-amber-400">4 次</div>
+        <div class="text-[11px] text-gray-400 mt-1">所有不合格稿件内部截杀</div>
+      </div>
+
+      <div class="bg-[#111827] border border-gray-800 rounded-2xl p-5">
+        <div class="text-xs text-gray-400 mb-1 flex items-center justify-between">
+          <span>已验收商用成果</span>
+          <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <div id="stat-done" class="text-2xl font-extrabold text-emerald-400">1 项</div>
+        <div class="text-[11px] text-gray-400 mt-1">100% 达标并完成存档</div>
+      </div>
+
+      <div class="bg-[#111827] border border-gray-800 rounded-2xl p-5">
+        <div class="text-xs text-gray-400 mb-1 flex items-center justify-between">
+          <span>智能体协同引擎</span>
+          <span class="text-xs text-gray-500">Antigravity</span>
+        </div>
+        <div class="text-2xl font-extrabold text-white">原生并发</div>
+        <div class="text-[11px] text-emerald-400 mt-1">零限流 · 独立上下文</div>
+      </div>
+    </section>
+
+    <!-- 核心区域 1: 老板任务下达与智能派单中枢 (Input Hub) -->
+    <section class="bg-[#111827] border border-gray-800 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h2 class="text-lg font-bold text-white flex items-center space-x-2">
+            <span>👑 任务调度与智能派单中枢</span>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">通用需求接收台</span>
+          </h2>
+          <p class="text-xs text-gray-400 mt-1">无需遵循固定模板！输入您的任何工作需求，PM 将自动拆解目标并分发给专业专家执行与质检。</p>
+        </div>
+      </div>
+
+      <!-- 快速需求填充胶囊 -->
+      <div class="flex flex-wrap items-center gap-2 mb-3">
+        <span class="text-xs text-gray-400">快速填入测试灵感：</span>
+        <button onclick="fillPreset('自媒体全案')" class="px-2.5 py-1 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs border border-gray-700 transition-colors">
+          ✨ 某宋韵养生茶小红书冷启动全案
+        </button>
+        <button onclick="fillPreset('代码工具')" class="px-2.5 py-1 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs border border-gray-700 transition-colors">
+          💻 开发一个自动化周报导出小工具
+        </button>
+        <button onclick="fillPreset('电商测款')" class="px-2.5 py-1 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs border border-gray-700 transition-colors">
+          📦 跨境电商黑五爆款落地页与投流ROI
+        </button>
+      </div>
+
+      <!-- 输入框 -->
+      <div class="space-y-4">
+        <textarea id="task-input" rows="3" placeholder="在此输入您想安排的任何工作内容...（例如：帮我策划一套新能源汽车的小红书发布方案，包括3篇文案、排版建议与转化货盘）" class="w-full bg-[#0a0e17] border border-gray-800 focus:border-blue-500 rounded-xl p-4 text-sm text-gray-100 placeholder-gray-500 focus:outline-none transition-colors resize-none"></textarea>
+
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-1">
+          <!-- 专家勾选池 -->
+          <div class="flex flex-wrap items-center gap-3 text-xs text-gray-300">
+            <span class="text-gray-400">协同专家池：</span>
+            <label class="flex items-center space-x-1.5 cursor-pointer">
+              <input type="checkbox" id="role-lele" checked class="rounded border-gray-700 text-blue-600 focus:ring-0 bg-gray-900">
+              <span class="text-red-400 font-medium">乐乐 (文案编剧)</span>
+            </label>
+            <label class="flex items-center space-x-1.5 cursor-pointer">
+              <input type="checkbox" id="role-maomao" checked class="rounded border-gray-700 text-blue-600 focus:ring-0 bg-gray-900">
+              <span class="text-blue-400 font-medium">毛毛 (商业运营)</span>
+            </label>
+            <label class="flex items-center space-x-1.5 cursor-pointer">
+              <input type="checkbox" id="role-xiongxiong" checked class="rounded border-gray-700 text-blue-600 focus:ring-0 bg-gray-900">
+              <span class="text-purple-400 font-medium">熊熊 (视觉前端)</span>
+            </label>
+            <label class="flex items-center space-x-1.5 cursor-pointer">
+              <input type="checkbox" id="role-pm" checked disabled class="rounded border-gray-700 text-emerald-600 focus:ring-0 bg-gray-900">
+              <span class="text-emerald-400 font-medium">PM (架构与质检)</span>
+            </label>
+          </div>
+
+          <!-- 派单按钮 -->
+          <button onclick="dispatchNewTask()" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold text-xs shadow-lg shadow-blue-500/25 transition-all transform hover:-translate-y-0.5 flex items-center justify-center space-x-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+            <span>立即拆解并派工 →</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 核心区域 2: 通用项目流转看板 (Kanban Flow) -->
+    <section>
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-bold text-white flex items-center space-x-2">
+          <span>📌 全业务流程管理看板 (Kanban)</span>
+        </h2>
+        <span class="text-xs text-gray-400">点击任意卡片，滑出底层审计黑匣子与初稿驳回流水</span>
+      </div>
+
+      <!-- 四列看板 -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-start">
+        
+        <!-- 列 1: 待分配 / Backlog -->
+        <div class="bg-[#111827]/60 border border-gray-800 rounded-2xl p-4 flex flex-col space-y-3 min-h-[420px]">
+          <div class="flex items-center justify-between pb-2 border-b border-gray-800">
+            <span class="text-xs font-bold text-gray-400 flex items-center space-x-1.5">
+              <span class="w-2 h-2 rounded-full bg-gray-500"></span>
+              <span>待分配 / 需求分析</span>
+            </span>
+            <span id="count-backlog" class="text-xs font-mono px-2 py-0.5 rounded bg-gray-800 text-gray-400">1</span>
+          </div>
+          <div id="col-backlog" class="space-y-3">
+            <!-- 演示卡片: 任务3 -->
+            <div onclick="openTaskDetail('task-3')" class="bg-[#161f33] hover:bg-[#1c2742] border border-gray-800 hover:border-gray-700 rounded-xl p-4 cursor-pointer transition-all shadow-md group">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">代码工具类</span>
+                <span class="text-[10px] text-gray-500 font-mono">10分钟前</span>
+              </div>
+              <h4 class="text-xs font-bold text-white group-hover:text-blue-400 transition-colors mb-2">企业内部周报自动化导出 CLI 工具</h4>
+              <p class="text-[11px] text-gray-400 line-clamp-2 mb-3">抓取 Git 提交日志与 Jira 工单，自动汇总为符合周报规范的 Markdown 研报。</p>
+              <div class="flex items-center justify-between text-[10px] text-gray-400 pt-2 border-t border-gray-800/60">
+                <span>指派：熊熊 + PM</span>
+                <span class="text-gray-500">待开工</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 列 2: 专家作业中 / In Progress -->
+        <div class="bg-[#111827]/60 border border-gray-800 rounded-2xl p-4 flex flex-col space-y-3 min-h-[420px]">
+          <div class="flex items-center justify-between pb-2 border-b border-gray-800">
+            <span class="text-xs font-bold text-blue-400 flex items-center space-x-1.5">
+              <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+              <span>专家作业中 (并发)</span>
+            </span>
+            <span id="count-inprogress" class="text-xs font-mono px-2 py-0.5 rounded bg-blue-500/10 text-blue-400">1</span>
+          </div>
+          <div id="col-inprogress" class="space-y-3">
+            <!-- 演示卡片: 任务2 -->
+            <div onclick="openTaskDetail('task-2')" class="bg-[#161f33] hover:bg-[#1c2742] border border-blue-500/30 rounded-xl p-4 cursor-pointer transition-all shadow-md group">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20">电商测款类</span>
+                <span class="text-[10px] text-blue-400 font-mono animate-pulse">正在精修中...</span>
+              </div>
+              <h4 class="text-xs font-bold text-white group-hover:text-blue-400 transition-colors mb-2">黑五爆款智能落地页与投流 ROI 测算</h4>
+              <p class="text-[11px] text-gray-400 line-clamp-2 mb-3">毛毛正在重算千川投流漏斗；熊熊正在重构移动端支付弹窗样式。</p>
+              <div class="flex items-center justify-between text-[10px] text-gray-400 pt-2 border-t border-gray-800/60">
+                <div class="flex items-center space-x-1 text-gray-300">
+                  <span class="w-4 h-4 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-[9px] font-bold">毛</span>
+                  <span class="w-4 h-4 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-[9px] font-bold">熊</span>
+                </div>
+                <span class="text-amber-400 font-medium">第 2 次修改中</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 列 3: PM 严格质检与打回 / QA & Revisions -->
+        <div class="bg-[#111827]/60 border border-amber-500/30 rounded-2xl p-4 flex flex-col space-y-3 min-h-[420px] bg-gradient-to-b from-amber-500/5 to-transparent">
+          <div class="flex items-center justify-between pb-2 border-b border-gray-800">
+            <span class="text-xs font-bold text-amber-300 flex items-center space-x-1.5">
+              <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+              <span>PM 严格质检驳回</span>
+            </span>
+            <span id="count-qa" class="text-xs font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 font-bold">1</span>
+          </div>
+          <div id="col-qa" class="space-y-3">
+            <!-- 演示卡片: 任务4 (被驳回整改) -->
+            <div onclick="openTaskDetail('task-4')" class="bg-[#1a171d] hover:bg-[#231e27] border border-amber-500/40 rounded-xl p-4 cursor-pointer transition-all shadow-md group">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-red-500/10 text-red-400 border border-red-500/20">内容自媒体类</span>
+                <span class="text-[10px] text-amber-400 font-bold">已打回 1 次</span>
+              </div>
+              <h4 class="text-xs font-bold text-white group-hover:text-amber-300 transition-colors mb-2">职场人 AI 提速短视频文案分镜</h4>
+              <p class="text-[11px] text-red-300/80 mb-3 bg-red-500/5 p-2 rounded-lg border border-red-500/20">
+                ⚠️ PM驳回：初稿前3秒平淡无冲突，完播率预期极低，勒令乐乐重写黄金钩子！
+              </p>
+              <div class="flex items-center justify-between text-[10px] text-gray-400 pt-2 border-t border-gray-800/60">
+                <span>责任人：乐乐</span>
+                <span class="text-blue-400">点击查看驳回批注 →</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 列 4: 验收交付 / Done -->
+        <div class="bg-[#111827]/60 border border-emerald-500/30 rounded-2xl p-4 flex flex-col space-y-3 min-h-[420px] bg-gradient-to-b from-emerald-500/5 to-transparent">
+          <div class="flex items-center justify-between pb-2 border-b border-gray-800">
+            <span class="text-xs font-bold text-emerald-400 flex items-center space-x-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              <span>已验收商用交付</span>
+            </span>
+            <span id="count-done" class="text-xs font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold">1</span>
+          </div>
+          <div id="col-done" class="space-y-3">
+            <!-- 演示卡片: 任务1 (宋韵茶饮已交付) -->
+            <div onclick="openTaskDetail('task-1')" class="bg-[#11241f] hover:bg-[#163029] border border-emerald-500/40 rounded-xl p-4 cursor-pointer transition-all shadow-md group">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">新媒体全案</span>
+                <span class="text-[10px] text-emerald-400 font-bold">A+ 终审过检</span>
+              </div>
+              <h4 class="text-xs font-bold text-white group-hover:text-emerald-300 transition-colors mb-2">宋韵养生茶小红书冷启动与私域全案</h4>
+              <p class="text-[11px] text-gray-300 line-clamp-2 mb-3">经 3 次质检打回后全部清零！包含爆款图文、19.9/128/899三阶货盘与视觉规范。</p>
+              <div class="flex items-center justify-between text-[10px] text-gray-400 pt-2 border-t border-emerald-500/20">
+                <span class="text-emerald-400 font-medium">文件：SONG_TEA_MARKETING_PLAN.md</span>
+                <span class="text-white underline">查看穿透 →</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================== -->
+  <!-- 抽屉组件: 任务底层穿透黑匣子 (Sliding Drawer) -->
+  <!-- ========================================== -->
+  <div id="task-drawer-backdrop" onclick="closeTaskDrawer()" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden transition-opacity"></div>
+  <div id="task-drawer" class="fixed top-0 right-0 bottom-0 w-full max-w-xl bg-[#0e1422] border-l border-gray-800 z-50 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+    <!-- 头部 -->
+    <div class="p-5 border-b border-gray-800 flex items-center justify-between bg-[#111827]">
+      <div>
+        <h3 id="task-drawer-title" class="text-base font-bold text-white flex items-center space-x-2">
+          <span>任务全流程穿透审计</span>
+        </h3>
+        <p id="task-drawer-subtitle" class="text-xs text-gray-400 mt-0.5">派工单、初稿缺陷、PM批注与精修对照</p>
+      </div>
+      <button onclick="closeTaskDrawer()" class="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <!-- 内容区 -->
+    <div id="task-drawer-body" class="flex-1 p-6 overflow-y-auto space-y-6 text-xs text-gray-300">
+      <!-- 动态填充 -->
+    </div>
+  </div>
+
+  <!-- 页脚 -->
+  <footer class="mt-auto border-t border-gray-800/80 bg-[#0a0e17] py-6 text-center text-xs text-gray-500">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <div>© 2026 郭伟团队 · Antigravity 通用任务管理控制台 (形态 B)</div>
+      <div class="flex items-center space-x-4">
+        <span>全自动部署就绪</span>
+        <span>•</span>
+        <a href="/pm-hub" class="text-blue-400 hover:underline">体验业务交付原型</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 交互逻辑 -->
+  <script>
+    // 任务数据库
+    const taskDatabase = {
+      'task-1': {
+        title: "《宋韵冷萃草本茶》小红书全案与私域货盘",
+        category: "新媒体全案 · 状态：已终审交付",
+        content: `
+          <div class="space-y-4">
+            <div class="bg-gray-900 p-3.5 rounded-xl border border-gray-800">
+              <span class="text-[10px] font-bold text-blue-400 uppercase tracking-wide">1. 老板原始派单</span>
+              <p class="mt-1 text-gray-200">“帮我做一套东方草本茶饮小红书冷启动方案，要图文文案、三阶货盘和视觉规范，别整虚的。”</p>
+            </div>
+
+            <div class="bg-red-500/10 p-3.5 rounded-xl border border-red-500/30">
+              <span class="text-[10px] font-bold text-red-400 uppercase tracking-wide">2. 乐乐初稿缺陷 (被打回)</span>
+              <p class="mt-1 text-gray-400 line-through">“大家好，今天分享一款非常好喝的宋韵养生茶，配料干净无添加，欢迎大家品尝……”</p>
+              <div class="mt-2 text-red-300 font-semibold">❌ PM驳回：纯产品说明书，没有痛点反差！立即推翻重写，结合打工人天天喝冰美式胃痛、心慌的共鸣做切角！</div>
+            </div>
+
+            <div class="bg-amber-500/10 p-3.5 rounded-xl border border-amber-500/30">
+              <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wide">3. 毛毛货盘打回记录</span>
+              <p class="mt-1 text-gray-300">毛毛原设定单罐 89 元包邮。PM 驳回要求增加 19.9 元 7 袋体验装作为公域低成本拓客的破冰抓手，避免高客单导致转化阻力。</p>
+            </div>
+
+            <div class="bg-emerald-500/10 p-3.5 rounded-xl border border-emerald-500/30">
+              <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wide">4. 终审成果包 (Commercial Grade A+)</span>
+              <div class="mt-2 space-y-2 text-emerald-200">
+                <div>• 标题精修：《劝所有天天喝冰美式续命的打工人，换成这罐“救命水”吧！》</div>
+                <div>• 货盘精修：19.9破冰款 + 128月装利润款 + 899私域私董款</div>
+                <div>• 本地文件已归档：<code>SONG_TEA_MARKETING_PLAN.md</code></div>
+              </div>
+            </div>
+          </div>
+        `
+      },
+      'task-2': {
+        title: "黑五爆款智能落地页与投流 ROI 测算",
+        category: "电商测款 · 状态：修改中 (第 2 轮)",
+        content: `
+          <div class="space-y-4">
+            <div class="bg-gray-900 p-3.5 rounded-xl border border-gray-800">
+              <span class="text-[10px] font-bold text-blue-400 uppercase tracking-wide">1. 老板原始派单</span>
+              <p class="mt-1 text-gray-200">“为即将到来的黑五大促，搭建一个移动端秒级打开的单品爆款落地页，并测算千川投流模型。”</p>
+            </div>
+
+            <div class="bg-amber-500/10 p-3.5 rounded-xl border border-amber-500/30">
+              <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wide">2. 第一次打回：熊熊移动端悬浮遮挡</span>
+              <p class="mt-1 text-gray-300">在 375px 小屏端，底部购买按钮由于 z-index 冲突遮挡了促销优惠券输入框，PM 驳回要求重写 CSS 布局。</p>
+            </div>
+
+            <div class="bg-amber-500/10 p-3.5 rounded-xl border border-amber-500/30">
+              <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wide">3. 第二次打回：毛毛投流保本点脱离实际</span>
+              <p class="mt-1 text-gray-300">毛毛设定的投流保本 ROI 为 1:1.1，未计入 15% 退货率与物流运损。PM 驳回要求修正为 1:1.68 并补齐阶梯赠品。</p>
+            </div>
+
+            <div class="bg-blue-500/10 p-3.5 rounded-xl border border-blue-500/30">
+              <span class="text-[10px] font-bold text-blue-400 uppercase tracking-wide">4. 当前进度状态</span>
+              <p class="mt-1 text-blue-200">熊熊与毛毛正在联合调试第二版产物，预计 5 分钟内再次提交 PM 终审。</p>
+            </div>
+          </div>
+        `
+      },
+      'task-3': {
+        title: "企业内部周报自动化导出 CLI 工具",
+        category: "代码工具类 · 状态：待开工",
+        content: `
+          <div class="space-y-4">
+            <div class="bg-gray-900 p-3.5 rounded-xl border border-gray-800">
+              <span class="text-[10px] font-bold text-blue-400 uppercase tracking-wide">1. 需求描述</span>
+              <p class="mt-1 text-gray-200">开发一个单文件 Python 脚本或 CLI 工具，每周五自动抓取本地工作区最近7天的 Git Commit 与测试日志，自动格式化为周报大纲。</p>
+            </div>
+            <div class="bg-gray-900/60 p-3.5 rounded-xl border border-gray-800 text-gray-400">
+              等待指派技术角色进入【专家作业中】泳道执行。
+            </div>
+          </div>
+        `
+      },
+      'task-4': {
+        title: "职场人 AI 提速短视频文案分镜",
+        category: "内容自媒体 · 状态：质检打回中",
+        content: `
+          <div class="space-y-4">
+            <div class="bg-red-500/10 p-3.5 rounded-xl border border-red-500/30">
+              <span class="text-[10px] font-bold text-red-400 uppercase tracking-wide">PM 严厉驳回通知书 (已发给乐乐)</span>
+              <p class="mt-2 text-red-200 font-semibold leading-relaxed">
+                “乐乐，你交的初稿前 3 秒：‘今天教大家几个 AI 技巧’，完全就是不及格的说明文自嗨！在短视频算法里 1 秒就会被滑走。必须以‘隔壁组裁员’或者‘领导用AI评估你’作为极端冲突开局，15分钟内重写！”
+              </p>
+            </div>
+          </div>
+        `
+      }
+    };
+
+    function openTaskDetail(id) {
+      const data = taskDatabase[id];
+      if (!data) return;
+      document.getElementById('task-drawer-title').innerText = data.title;
+      document.getElementById('task-drawer-subtitle').innerText = data.category;
+      document.getElementById('task-drawer-body').innerHTML = data.content;
+
+      document.getElementById('task-drawer-backdrop').classList.remove('hidden');
+      document.getElementById('task-drawer').classList.remove('translate-x-full');
+    }
+
+    function closeTaskDrawer() {
+      document.getElementById('task-drawer-backdrop').classList.add('hidden');
+      document.getElementById('task-drawer').classList.add('translate-x-full');
+    }
+
+    function fillPreset(type) {
+      const input = document.getElementById('task-input');
+      if (type === '自媒体全案') {
+        input.value = "帮我做一套《宋韵草本养生茶》小红书冷启动爆款图文与私域复购货盘方案，重点解决打工人换掉冰美式的痛点。";
+      } else if (type === '代码工具') {
+        input.value = "编写一个本地自动化脚本，能一键扫描项目并输出规范的 Git 提交日志和代码健康报告。";
+      } else if (type === '电商测款') {
+        input.value = "搭建一个适合黑五促销的移动端单品落地页，并用 Excel 逻辑测算出各流量渠道的保本 ROI 阈值。";
+      }
+    }
+
+    // 动态派发新任务并生成卡片
+    let newTaskIdCounter = 5;
+    function dispatchNewTask() {
+      const input = document.getElementById('task-input');
+      const val = input.value.trim();
+      if (!val) {
+        alert("请先输入您想安排的任务需求！");
+        return;
+      }
+
+      const taskId = `task-${newTaskIdCounter++}`;
+      taskDatabase[taskId] = {
+        title: val.slice(0, 24) + (val.length > 24 ? "..." : ""),
+        category: "新建需求 · 状态：专家作业中",
+        content: `
+          <div class="space-y-4">
+            <div class="bg-gray-900 p-3.5 rounded-xl border border-gray-800">
+              <span class="text-[10px] font-bold text-blue-400 uppercase tracking-wide">老板派工需求</span>
+              <p class="mt-1 text-gray-200">“${val}”</p>
+            </div>
+            <div class="bg-blue-500/10 p-3.5 rounded-xl border border-blue-500/30">
+              <span class="text-[10px] font-bold text-blue-400 uppercase tracking-wide">PM 调度状态</span>
+              <p class="mt-1 text-blue-200">已将任务成功拆解并派发至专家泳道！专家正在独立生成初稿，PM 正在后台待命执行质量审核。</p>
+            </div>
+          </div>
+        `
+      };
+
+      // 插入到【专家作业中】列
+      const col = document.getElementById('col-inprogress');
+      const card = document.createElement('div');
+      card.onclick = () => openTaskDetail(taskId);
+      card.className = "bg-[#161f33] hover:bg-[#1c2742] border border-blue-500/40 rounded-xl p-4 cursor-pointer transition-all shadow-md group animate-pulse-subtle";
+      card.innerHTML = `
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">最新派工</span>
+          <span class="text-[10px] text-blue-400 font-mono">刚刚指派</span>
+        </div>
+        <h4 class="text-xs font-bold text-white group-hover:text-blue-400 transition-colors mb-2">${val.slice(0, 24)}${val.length > 24 ? '...' : ''}</h4>
+        <p class="text-[11px] text-gray-400 line-clamp-2 mb-3">${val}</p>
+        <div class="flex items-center justify-between text-[10px] text-gray-400 pt-2 border-t border-gray-800/60">
+          <span>PM 正在监督初稿</span>
+          <span class="text-emerald-400 font-medium">执行中 →</span>
+        </div>
+      `;
+      col.insertBefore(card, col.firstChild);
+
+      // 更新计数
+      const statActive = document.getElementById('stat-active');
+      statActive.innerText = (parseInt(statActive.innerText) + 1) + " 个";
+
+      input.value = "";
+      alert("✅ 任务已成功派发给 Agent 集群！已自动进入【专家作业中】泳道，您可以点击刚刚生成的卡片查看调度详情。");
+    }
+  </script>
+</body>
+</html>
