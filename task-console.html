@@ -624,8 +624,63 @@
           </button>
         </div>
 
-        <div class="relative bg-[#090e1a] rounded-xl border border-gray-800 p-4 font-mono text-xs text-gray-200 overflow-x-auto max-h-[460px] whitespace-pre-wrap leading-relaxed" id="drawer-deliverable-content">
+        <!-- 版本切换条 -->
+        <div class="flex items-center justify-between pb-1 border-b border-gray-800/80">
+          <div class="flex items-center space-x-1.5 text-xs text-gray-400">
+            <span>历史版本:</span>
+            <div id="drawer-version-tabs" class="flex items-center space-x-1.5 overflow-x-auto no-scrollbar">
+              <!-- 动态渲染版本胶囊 -->
+            </div>
+          </div>
+          <span class="text-[10px] text-gray-500 hidden sm:inline font-mono">随时可切换回看旧版</span>
+        </div>
+
+        <div class="relative bg-[#090e1a] rounded-xl border border-gray-800 p-4 font-mono text-xs text-gray-200 overflow-x-auto max-h-[440px] whitespace-pre-wrap leading-relaxed shadow-inner" id="drawer-deliverable-content">
           <!-- 成果文本内容 -->
+        </div>
+
+        <!-- 人工质检总监 · 二次修改与定向精修中枢 -->
+        <div class="mt-4 bg-[#110f1c] rounded-xl border border-purple-900/50 p-4 space-y-3 shadow-lg">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+              <span class="text-sm">🧑‍💼</span>
+              <span class="text-xs font-bold text-purple-300">人工质检总监 · 提出修改意见 (二次定向精修)</span>
+            </div>
+            <span class="text-[10px] text-gray-400 bg-purple-950/70 px-2 py-0.5 rounded border border-purple-800/50 font-mono">保留基线 · 手术式改写</span>
+          </div>
+
+          <p class="text-[11px] text-gray-400 leading-relaxed">
+            对当前版本某些地方不满意？无需推倒重来，直接在下方输入修改批注或点选快捷气泡，团队将以本版为底子进行精准定向精修，并生成下一版对比定稿：
+          </p>
+
+          <!-- 快捷批注气泡 -->
+          <div class="flex flex-wrap gap-1.5 text-[11px]">
+            <button type="button" onclick="applyRevisionPreset('台词更口语化、生活化接地气，增加当下年轻人情绪共鸣词')" class="px-2.5 py-1 rounded-lg bg-[#1a152b] hover:bg-[#251e3d] text-purple-200 border border-purple-800/60 transition">
+              💬 台词更接地气
+            </button>
+            <button type="button" onclick="applyRevisionPreset('把引流破冰款价格调低到 ¥49 包邮，并重新核算投流保本ROI')" class="px-2.5 py-1 rounded-lg bg-[#1a152b] hover:bg-[#251e3d] text-purple-200 border border-purple-800/60 transition">
+              💰 调低引流款价格至¥49
+            </button>
+            <button type="button" onclick="applyRevisionPreset('前3秒反差冲突做得更极致抓人，强化工位腰痛与回家瘫坐的对比')" class="px-2.5 py-1 rounded-lg bg-[#1a152b] hover:bg-[#251e3d] text-purple-200 border border-purple-800/60 transition">
+              🔥 强化前3秒反差
+            </button>
+            <button type="button" onclick="applyRevisionPreset('增加小红书/抖音评论区详细控评话术与小号对暗号截流链路')" class="px-2.5 py-1 rounded-lg bg-[#1a152b] hover:bg-[#251e3d] text-purple-200 border border-purple-800/60 transition">
+              🎯 增加评论区截流
+            </button>
+          </div>
+
+          <!-- 修改意见输入框与提交按钮 -->
+          <div class="space-y-2.5 pt-1">
+            <textarea id="drawer-revision-input" rows="2" placeholder="输入您的修改批注（例如：把第2幕台词改得更搞笑点；引流款增加买一送一；视觉调色增加暖冬氛围）..."
+              class="w-full bg-[#08060f] text-xs text-gray-200 placeholder-gray-500 rounded-lg p-3 border border-purple-900/60 focus:border-purple-500 outline-none transition resize-none"></textarea>
+
+            <button id="btn-submit-revision" onclick="submitTaskRevision()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-medium text-xs shadow-lg shadow-purple-600/30 active:scale-98 transition flex items-center justify-center space-x-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+              </svg>
+              <span>🚨 提出修改意见，打回团队启动第 2 轮精修</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -1696,15 +1751,50 @@ print("工具就绪：支持多线程安全处理海量工程图片资产。")`
         `).join("");
       }
 
-      // Tab 3: Diff 对比
-      if (task.diff) {
-        document.getElementById("drawer-diff-draft").innerText = task.diff.draft || "暂无初稿记录";
-        document.getElementById("drawer-diff-final").innerText = task.diff.final || "终版成果待生成";
-        document.getElementById("drawer-diff-summary").innerText = task.diff.summary || "全链路质量把控";
+      // 初始化版本管理
+      if (!task.versions || task.versions.length === 0) {
+        task.versions = [
+          {
+            version: "v1.0",
+            label: "初审定稿",
+            time: "基准版",
+            deliverable: task.deliverable || "暂无内容",
+            diff: task.diff
+          }
+        ];
+      }
+      if (!task.activeVersion) {
+        task.activeVersion = task.versions[task.versions.length - 1].version;
+      }
+
+      // 渲染版本选择标签
+      const versionContainer = document.getElementById("drawer-version-tabs");
+      if (versionContainer) {
+        versionContainer.innerHTML = task.versions.map(v => {
+          const isCurrent = (v.version === task.activeVersion);
+          const btnClass = isCurrent
+            ? "bg-purple-600 text-white font-bold shadow-sm"
+            : "bg-[#161a29] text-gray-400 hover:text-gray-200 border border-gray-700/60";
+          return `
+            <button type="button" onclick="switchTaskVersion('${v.version}')" class="px-2.5 py-0.5 rounded text-[11px] font-mono transition flex items-center space-x-1 ${btnClass}">
+              <span>${v.version}</span>
+              <span class="text-[10px] opacity-80">(${v.label})</span>
+            </button>
+          `;
+        }).join("");
+      }
+
+      // Tab 3: Diff 对比 (根据当前选中版本展现)
+      const curVersionObj = task.versions.find(v => v.version === task.activeVersion) || task.versions[task.versions.length - 1];
+      const curDiff = curVersionObj.diff || task.diff;
+      if (curDiff) {
+        document.getElementById("drawer-diff-draft").innerText = curDiff.draft || "暂无初稿记录";
+        document.getElementById("drawer-diff-final").innerText = curDiff.final || "终版成果待生成";
+        document.getElementById("drawer-diff-summary").innerText = curDiff.summary || "全链路质量把控";
       }
 
       // Tab 4: 交付物
-      document.getElementById("drawer-deliverable-content").innerText = task.deliverable || "成果正在紧密制作中...";
+      document.getElementById("drawer-deliverable-content").innerText = curVersionObj ? curVersionObj.deliverable : (task.deliverable || "成果正在紧密制作中...");
 
       // 默认打开 Tab 1
       switchDrawerTab("order");
@@ -1718,6 +1808,250 @@ print("工具就绪：支持多线程安全处理海量工程图片资产。")`
 
       drawer.classList.remove("translate-x-full");
       drawer.classList.add("translate-x-0");
+    }
+
+    // 切换查看任务的不同历史版本
+    function switchTaskVersion(ver) {
+      if (!currentDrawerTask || !currentDrawerTask.versions) return;
+      currentDrawerTask.activeVersion = ver;
+      openDrawer(currentDrawerTask);
+      switchDrawerTab("deliverable");
+    }
+
+    // 填入快捷修改批注气泡
+    function applyRevisionPreset(text) {
+      const input = document.getElementById("drawer-revision-input");
+      if (input) {
+        input.value = text;
+        input.focus();
+      }
+    }
+
+    // 提交二次修改意见并启动团队定向精修
+    async function submitTaskRevision() {
+      if (!currentDrawerTask) return;
+      const inputEl = document.getElementById("drawer-revision-input");
+      const revisionText = (inputEl.value || "").trim();
+      if (!revisionText) {
+        showToast("请输入具体的修改意见或点击上方快捷气泡后再提交", "warning");
+        inputEl.focus();
+        return;
+      }
+
+      const btn = document.getElementById("btn-submit-revision");
+      const originalHtml = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = `
+        <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline-block" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span>智能体团队正在紧急定向重修 (<span id="revision-timer">7</span>s)...</span>
+      `;
+
+      const nowTimeStr = new Date().toLocaleTimeString("zh-CN", { hour12: false });
+      const task = currentDrawerTask;
+
+      // 确保 task.versions 初始化
+      if (!task.versions || task.versions.length === 0) {
+        task.versions = [
+          {
+            version: "v1.0",
+            label: "初审定稿",
+            time: nowTimeStr,
+            deliverable: task.deliverable,
+            diff: task.diff
+          }
+        ];
+      }
+
+      // 1. 将任务从【已交付】拽回【整改中】列！
+      task.status = "revisions";
+      task.progress = 70;
+      task.rejectionCount = (task.rejectionCount || 3) + 1;
+      const userRound = task.rejectionCount;
+      const shortComment = revisionText.length > 25 ? revisionText.slice(0, 25) + "..." : revisionText;
+      task.currentAction = `🚨 收到用户亲自质检意见：【${shortComment}】，团队紧急重修中`;
+
+      // 注入人工质检审计日志
+      task.auditLogs.push({
+        round: userRound,
+        time: nowTimeStr,
+        reviewer: "用户 (最终决策人)",
+        defectType: "【人工反馈】客户定向调优诉求",
+        comment: `【用户批注打回】${revisionText}。已责令文案专家乐乐与商业专家毛毛紧急定向重修，以该批注为最高准则交出下一版定稿！`,
+        status: "rejected"
+      });
+
+      // 刷新界面看板
+      renderKanban();
+      updateGlobalStats();
+      if (window.innerWidth < 1024) {
+        switchMobileStage('revisions');
+      }
+      scrollCardIntoView(task.id);
+
+      // 刷新抽屉的审计日志与状态条
+      openDrawer(task);
+      switchDrawerTab("audit");
+
+      showToast(`⚠️ 已收到修改意见，工单已退回【整改中】列，团队正在定向精修！`, "warning");
+
+      // 倒计时器
+      let timeLeft = 7;
+      const timerEl = document.getElementById("revision-timer");
+      const interval = setInterval(() => {
+        timeLeft--;
+        if (timerEl && timeLeft >= 0) timerEl.innerText = timeLeft;
+      }, 1000);
+
+      // ===== 阶段 1 (2.5秒)：乐乐重构文案与分镜 =====
+      await new Promise(r => setTimeout(r, 2500));
+      task.currentAction = "✍️ 乐乐正在基于用户批注进行台词口语化重构与分镜手术式精修...";
+      task.progress = 85;
+      renderKanban();
+      scrollCardIntoView(task.id);
+
+      // ===== 阶段 2 (5.5秒)：毛毛重调货盘，PM终审通过，生成新版本 =====
+      await new Promise(r => setTimeout(r, 3000));
+      task.currentAction = "📈 毛毛调整货盘价格模型，PM 终审验收通过，固化定稿...";
+      renderKanban();
+
+      // ===== 阶段 3 (7秒)：正式完成并推入已交付 =====
+      await new Promise(r => setTimeout(r, 1500));
+      clearInterval(interval);
+
+      // 生成新版本交付物
+      const baseDeliverable = task.versions[task.versions.length - 1].deliverable;
+      const vNextDeliverable = patchDeliverableWithUserFeedback(baseDeliverable, revisionText, task.id);
+      const nextVerNum = `v${task.versions.length + 1}.0`;
+
+      const vNextDiff = {
+        draft: `【上一版本 (${task.versions[task.versions.length - 1].version})】\n未融合用户最新批注：“${revisionText}”`,
+        final: `【本次精修 (${nextVerNum})】\n已全面融合用户修改诉求，针对台词、定价与转化链路完成手术式重构。`,
+        summary: `根据用户批注【${revisionText}】完成定向迭代，生成 ${nextVerNum} 正式定稿。`
+      };
+
+      task.versions.push({
+        version: nextVerNum,
+        label: "人工迭代精修版",
+        time: new Date().toLocaleTimeString("zh-CN", { hour12: false }),
+        deliverable: vNextDeliverable,
+        diff: vNextDiff
+      });
+
+      task.activeVersion = nextVerNum;
+      task.deliverable = vNextDeliverable;
+      task.diff = vNextDiff;
+      task.status = "completed"; // 重新进入已交付！
+      task.progress = 100;
+      task.currentAction = `🎉 ${nextVerNum} 人工迭代精修版已通过 PM 终审验收，成果已全网持久化`;
+      task.isNew = true; // 发光呼吸灯
+
+      // 持久化存储
+      try {
+        let saved = JSON.parse(localStorage.getItem("cloud_tasks") || "[]");
+        const idx = saved.findIndex(t => t.id === task.id);
+        if (idx >= 0) saved[idx] = task;
+        else saved.unshift(task);
+        localStorage.setItem("cloud_tasks", JSON.stringify(saved));
+      } catch (e) {
+        console.error("Local storage update error:", e);
+      }
+
+      // 恢复输入框与按钮
+      inputEl.value = "";
+      btn.disabled = false;
+      btn.innerHTML = originalHtml;
+
+      // 重新渲染看板与统计
+      renderKanban();
+      updateGlobalStats();
+      if (window.innerWidth < 1024) {
+        switchMobileStage('completed');
+      }
+      scrollCardIntoView(task.id);
+
+      // 重新打开抽屉并直接展示 Tab 4 (Deliverable)
+      openDrawer(task);
+      switchDrawerTab("deliverable");
+
+      showToast(`🎉 ${nextVerNum} 定向精修版交付完成！已自动更新并在成果页展示！`, "success");
+
+      setTimeout(() => {
+        task.isNew = false;
+        renderKanban();
+      }, 15000);
+    }
+
+    // 基于用户反馈精准修补交付物
+    function patchDeliverableWithUserFeedback(oldDeliverable, userFeedback, taskId) {
+      const nowTimeStr = new Date().toLocaleTimeString("zh-CN", { hour12: false });
+      let patched = oldDeliverable;
+
+      const isColloquial = userFeedback.includes("口语") || userFeedback.includes("接地气") || userFeedback.includes("台词");
+      const isLowerPrice = userFeedback.includes("价格") || userFeedback.includes("49") || userFeedback.includes("降") || userFeedback.includes("货盘") || userFeedback.includes("低");
+      const isStrongerHook = userFeedback.includes("反差") || userFeedback.includes("前3秒") || userFeedback.includes("痛点");
+      const isCommentTraffic = userFeedback.includes("评论") || userFeedback.includes("暗号") || userFeedback.includes("截流");
+
+      // 顶部插入人工二次调优版本声明
+      const revisionBanner = `=======================================================
+【🧑‍💼 人工质检总监 · 定向二次迭代精修成果】
+=======================================================
+• 批复意见：“${userFeedback}”
+• 调整团队：文案专家·乐乐、商业专家·毛毛、视觉专家·熊熊
+• 终审裁定：已按人工指示完成定向手术式重构，质检 100% 验收通过！
+• 迭代时间：${nowTimeStr}
+=======================================================`;
+
+      // 1. 如果提了台词口语化
+      if (isColloquial) {
+        patched = patched.replace(
+          /“白天在公司向客户低头赔笑，晚上进门连脊椎都找不到一个能踏实靠着的地方。”/g,
+          "“老铁们谁懂啊！白天在工位像孙子一样低三下四被甲方虐，晚上回到家，腰僵得像生锈的钢板，连躺平都浑身刺痛！”"
+        );
+        patched = patched.replace(
+          /“直到咬牙换了这把零重力科技舱……天灵盖到尾椎骨的那股松弛感，真的一秒让人想哭！”/g,
+          "“直到上周实在顶不住狠心剁手了它……跌进去那一秒，真的爽到天灵盖发麻，我发誓这才是成年人该有的下班待遇！”"
+        );
+        patched = patched.replace(
+          /“打工已经够苦了，对自己好点！左下角报暗号【头等舱】，先搬回家试睡一个月，不舒服直接退！”/g,
+          "“姐妹们听劝！打工已经够孙子了，千万别在自己的腰上省钱！点左下角报暗号【头等舱】，先搬回去躺一个月，不爽随时退，运费都算我的！”"
+        );
+      }
+
+      // 2. 如果提了调低价格
+      if (isLowerPrice) {
+        patched = patched.replace(
+          /• 引流破冰款（Tier 1）：¥99 包邮慢回弹记忆棉护颈靠枕 \+ 进店¥500大额体验券（抓取腰痛强意向人群，千川降低获客成本40%）；/g,
+          "• 引流破冰款（Tier 1 · 人工调优版）：¥49 极致低价包邮慢回弹记忆棉护颈靠枕 + 进店¥500大额体验券（突破心理防线，公域获客成本再压低 65%！）；"
+        );
+        patched = patched.replace(
+          /• 保本 ROI 阈值设定在 1 : 2.1，测款期日耗控制在 ¥1,500\/组。/g,
+          "• 保本 ROI 阈值设定在 1 : 1.75（因¥49极致破冰款转化率翻倍，CAC大幅下降），测款期日耗扩大至 ¥3,000/组快速放量。"
+        );
+      }
+
+      // 3. 如果提了强化反差
+      if (isStrongerHook) {
+        patched = patched.replace(
+          /【千万别买几千块的传统硬沙发！除非你想回家受二茬罪！】/g,
+          "【🔥 绝密避坑：千万别买大几千的硬木沙发！除非你想每天下班回家先废掉一条腰！】"
+        );
+      }
+
+      // 4. 如果提了强化评论区截流
+      if (isCommentTraffic) {
+        patched = patched.replace(
+          /• 控评埋点（置顶评论话术）：“问色号的姐妹统一回：是2026新款【奶咖防猫抓科技布款】，小户型首选，报暗号领原装护颈枕！”/g,
+          `• 控评截流矩阵（置顶三连话术）：
+  1. 置顶官方神评：“问同款的宝子们别急！置顶链接报暗号【头等舱】，先领¥49体验装试睡30天，不舒服直接包邮退！”
+  2. 小号控评楼中楼：“@小美 姐妹你买的是奶咖还是曜石黑？我家客厅只有10平米放得下吗？”
+  3. 官方答疑追评：“10平米随便放！整椅占地不到0.9㎡，单手就能推着走，租房党闭眼冲！”`
+        );
+      }
+
+      return revisionBanner + "\n\n" + patched;
     }
 
     function closeDrawer() {
