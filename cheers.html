@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>芝华仕·庐江物宝店 线上运营诊断与陪跑战略看板</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- ECharts CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+  <!-- Phosphor Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              gold: '#D4AF37',
+              darkgold: '#B89726',
+              lightgold: '#FDF8EA',
+              navy: '#0B1120',
+              card: '#161F36',
+              border: '#233052'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: #080C16;
+      color: #E2E8F0;
+    }
+    .glass-card {
+      background: rgba(22, 31, 54, 0.75);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(212, 175, 55, 0.15);
+      border-radius: 1rem;
+    }
+    .glow-gold {
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.18);
+    }
+    .badge-pill {
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      color: #F3E5AB;
+    }
+    /* Hide scrollbar for tabs */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen text-slate-100 antialiased selection:bg-yellow-500/30 selection:text-yellow-200">
+
+  <!-- Top Navigation Bar -->
+  <header class="sticky top-0 z-50 border-b border-brand-border/60 bg-[#080C16]/90 backdrop-blur-md px-4 py-3 sm:px-8">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-brand-gold to-yellow-600 flex items-center justify-center font-bold text-black text-lg shadow-md">
+          芝
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-bold text-base sm:text-lg tracking-wide text-white">芝华仕头等舱沙发 · 庐江物宝店</h1>
+            <span class="badge-pill px-2 py-0.5 text-xs rounded-full font-medium hidden sm:inline-block">实战陪跑专项</span>
+          </div>
+          <p class="text-xs text-slate-400">线上全景诊断 · IP人设破局 · 本地增长路线图</p>
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-2 sm:gap-3">
+        <a href="https://kcn5jip13g93.feishu.cn/wiki/DmzfwfYySioZnGkVgL9cqdMenug" target="_blank" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-blue-600/20 text-blue-300 border border-blue-500/30 hover:bg-blue-600/30 transition flex items-center gap-1.5">
+          <i class="ph-bold ph-file-text"></i>
+          <span>飞书云文档</span>
+        </a>
+        <button onclick="window.print()" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-brand-gold/15 text-brand-gold border border-brand-gold/30 hover:bg-brand-gold/25 transition flex items-center gap-1.5">
+          <i class="ph-bold ph-printer"></i>
+          <span class="hidden sm:inline">导出/打印</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-8 py-6 space-y-8">
+    
+    <!-- Header Title Banner -->
+    <div class="glass-card p-6 sm:p-8 relative overflow-hidden glow-gold">
+      <div class="absolute -right-12 -bottom-12 w-64 h-64 bg-brand-gold/5 rounded-full blur-3xl pointer-events-none"></div>
+      
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+        <div class="space-y-3">
+          <div class="flex items-center gap-2 text-xs font-semibold text-brand-gold tracking-widest uppercase">
+            <i class="ph-fill ph-sparkle"></i>
+            <span>EXECUTIVE STORE AUDIT & STRATEGY</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight">
+            从“总部带货”到“庐江本地IP主场”
+          </h2>
+          <p class="text-sm sm:text-base text-slate-300 max-w-2xl leading-relaxed">
+            基于抖音生意经官方数据底层全景洞察：剖析 <span class="text-brand-gold font-semibold">0 核销</span> 与 <span class="text-brand-gold font-semibold">4人自然访客</span> 背后的三个核心断层，打造老板娘专属高辨识度同城标杆 IP。
+          </p>
+          <div class="flex flex-wrap gap-2 pt-1 text-xs text-slate-400">
+            <span class="bg-slate-800/80 px-2.5 py-1 rounded border border-slate-700/60"><i class="ph ph-map-pin text-brand-gold"></i> 合肥市庐江县·物宝东方荟</span>
+            <span class="bg-slate-800/80 px-2.5 py-1 rounded border border-slate-700/60"><i class="ph ph-tag text-brand-gold"></i> 人均客单 ¥8,102</span>
+            <span class="bg-slate-800/80 px-2.5 py-1 rounded border border-slate-700/60"><i class="ph ph-calendar text-brand-gold"></i> 2026年11月23日 对接专案</span>
+          </div>
+        </div>
+
+        <!-- Callout Box -->
+        <div class="bg-gradient-to-br from-yellow-500/10 to-amber-700/5 border border-brand-gold/30 rounded-xl p-4 sm:p-5 md:max-w-xs shrink-0">
+          <div class="text-xs text-brand-gold font-bold flex items-center gap-1.5 mb-2">
+            <i class="ph-fill ph-warning-circle text-base"></i>
+            <span>核心诊断一句话总结</span>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-200 leading-snug">
+            “钱是总部在云端帮您卖的，但没有一分钱真正留在庐江本地的门店里。<strong>破局的关键是把人设立起来，让本地人认准你。</strong>”
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Core Metrics Cards -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="glass-card p-4 sm:p-5 border-l-4 border-l-amber-500">
+        <div class="text-xs text-slate-400 mb-1 flex items-center justify-between">
+          <span>意向成交金额 (年)</span>
+          <i class="ph ph-currency-cny text-amber-400"></i>
+        </div>
+        <div class="text-xl sm:text-2xl font-black text-white">¥7,615</div>
+        <div class="text-[11px] text-amber-300/80 mt-1 flex items-center gap-1">
+          <i class="ph ph-cloud"></i> 8张券 · 100%总部直播带货
+        </div>
+      </div>
+
+      <div class="glass-card p-4 sm:p-5 border-l-4 border-l-red-500">
+        <div class="text-xs text-slate-400 mb-1 flex items-center justify-between">
+          <span>实际到店核销</span>
+          <i class="ph ph-x-circle text-red-400"></i>
+        </div>
+        <div class="text-xl sm:text-2xl font-black text-red-400">¥0</div>
+        <div class="text-[11px] text-red-300/80 mt-1 flex items-center gap-1">
+          <i class="ph ph-warning"></i> 核销率 0% · 退款率 100%
+        </div>
+      </div>
+
+      <div class="glass-card p-4 sm:p-5 border-l-4 border-l-blue-500">
+        <div class="text-xs text-slate-400 mb-1 flex items-center justify-between">
+          <span>本地自主访客 (近7日)</span>
+          <i class="ph ph-users text-blue-400"></i>
+        </div>
+        <div class="text-xl sm:text-2xl font-black text-white">4 <span class="text-xs font-normal text-slate-400">人</span></div>
+        <div class="text-[11px] text-blue-300/80 mt-1 flex items-center gap-1">
+          <i class="ph ph-trend-down"></i> 本地自然流量几乎断流
+        </div>
+      </div>
+
+      <div class="glass-card p-4 sm:p-5 border-l-4 border-l-purple-500">
+        <div class="text-xs text-slate-400 mb-1 flex items-center justify-between">
+          <span>线上评价累积</span>
+          <i class="ph ph-chat-circle text-purple-400"></i>
+        </div>
+        <div class="text-xl sm:text-2xl font-black text-white">0 <span class="text-xs font-normal text-slate-400">条</span></div>
+        <div class="text-[11px] text-purple-300/80 mt-1 flex items-center gap-1">
+          <i class="ph ph-shield-slash"></i> 缺少本地口碑信任壁垒
+        </div>
+      </div>
+    </div>
+
+    <!-- Interactive Charts Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      
+      <!-- Chart 1: The Disconnect -->
+      <div class="glass-card p-5 sm:p-6 space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="font-bold text-base sm:text-lg text-white flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-brand-gold"></span>
+              意向金额 vs 实际核销（断层对比）
+            </h3>
+            <p class="text-xs text-slate-400">线上领券并未转化为到店实收，存在100%闭环流失</p>
+          </div>
+          <span class="text-xs px-2 py-1 bg-red-500/10 text-red-400 border border-red-500/30 rounded">流失率 100%</span>
+        </div>
+        <div id="chart-funnel" class="w-full h-64 sm:h-72"></div>
+      </div>
+
+      <!-- Chart 2: Potential Revenue Model -->
+      <div class="glass-card p-5 sm:p-6 space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="font-bold text-base sm:text-lg text-white flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              庐江本地 IP 激活收益测算
+            </h3>
+            <p class="text-xs text-slate-400">以人均客单 ¥8,102 测算，每月仅需极低成交即可爆发</p>
+          </div>
+          <span class="text-xs px-2 py-1 bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 rounded">高客单红利</span>
+        </div>
+        <div id="chart-growth" class="w-full h-64 sm:h-72"></div>
+      </div>
+
+    </div>
+
+    <!-- The 3 Core Gaps (Accordion/Cards) -->
+    <div class="space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+          <i class="ph-bold ph-intersect text-brand-gold"></i>
+          核心病灶拆解：三个致命断层
+        </h3>
+        <span class="text-xs text-slate-400">点击卡片可查看破局对策</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Card 1 -->
+        <div class="glass-card p-5 hover:border-brand-gold/40 transition duration-300 flex flex-col justify-between">
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl font-black mb-3 border border-amber-500/20">
+              01
+            </div>
+            <h4 class="font-bold text-white text-base mb-1">流量断层 · 依赖输血</h4>
+            <div class="text-xs text-amber-300/80 mb-3 font-mono">100% 依赖总部大场直播</div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              本地账号没有自主造血能力。一旦总部停播或算法调整，门店线上流量与潜在客户线索瞬间归零，没有沉淀下庐江本地的真实粉丝池。
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-700/60 text-xs text-brand-gold font-medium flex items-center gap-1">
+            <i class="ph-bold ph-arrow-right"></i> 破局：打造本地矩阵，沉淀同城流量
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="glass-card p-5 hover:border-brand-gold/40 transition duration-300 flex flex-col justify-between">
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-red-500/10 text-red-400 flex items-center justify-center text-xl font-black mb-3 border border-red-500/20">
+              02
+            </div>
+            <h4 class="font-bold text-white text-base mb-1">信任断层 · 有人无设</h4>
+            <div class="text-xs text-red-300/80 mb-3 font-mono">出镜营销但缺乏情感共鸣</div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              老板娘虽有镜头底子，但目前内容多为单向促销叫卖，缺少县城创业故事、专业挑货眼光和真诚人设。县城是熟人社会，不认识你，就难托付几万块的大件。
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-700/60 text-xs text-brand-gold font-medium flex items-center gap-1">
+            <i class="ph-bold ph-arrow-right"></i> 破局：深挖经历，立“懂生活家居顾问”
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="glass-card p-5 hover:border-brand-gold/40 transition duration-300 flex flex-col justify-between">
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center text-xl font-black mb-3 border border-blue-500/20">
+              03
+            </div>
+            <h4 class="font-bold text-white text-base mb-1">转化断层 · 缺少抓手</h4>
+            <div class="text-xs text-blue-300/80 mb-3 font-mono">0评价背书 · 无到店钩子</div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              客户线上刷到过或进店试坐过，但线上缺乏本地真实买家秀、安装实拍案例。面对高客单决策时，客户找不到“为什么必须现在在你家买”的理由。
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-700/60 text-xs text-brand-gold font-medium flex items-center gap-1">
+            <i class="ph-bold ph-arrow-right"></i> 破局：设计到店特权礼，打通核销闭环
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Plan: The 3 Big Wins This Week -->
+    <div class="glass-card p-6 sm:p-8 space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-brand-border/60 pb-4">
+        <div>
+          <h3 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+            <i class="ph-fill ph-rocket-launch text-brand-gold"></i>
+            本周陪跑攻坚：我们要打赢的三场硬仗
+          </h3>
+          <p class="text-xs text-slate-400">现场陪跑 · 边教边带 · 跑通从0到1闭环</p>
+        </div>
+        <div class="text-xs text-brand-gold bg-brand-gold/10 px-3 py-1 rounded-full border border-brand-gold/30 self-start sm:self-auto">
+          7天陪跑战术规划
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <!-- Task 1 -->
+        <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 flex items-start gap-4">
+          <div class="w-6 h-6 rounded-full bg-brand-gold/20 text-brand-gold flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
+            1
+          </div>
+          <div class="space-y-1">
+            <h4 class="font-bold text-white text-sm sm:text-base">第一战：立住个人 IP 灵魂（周一至周二）</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              从“卖沙发的老板娘”，蜕变为<strong>“庐江懂生活、懂品质家居的首席顾问”</strong>。通过 5 组深度商业故事访谈，挖掘创业经历与大单故事，定版第 1 支高完播人设爆款口播。
+            </p>
+          </div>
+        </div>
+
+        <!-- Task 2 -->
+        <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 flex items-start gap-4">
+          <div class="w-6 h-6 rounded-full bg-brand-gold/20 text-brand-gold flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
+            2
+          </div>
+          <div class="space-y-1">
+            <h4 class="font-bold text-white text-sm sm:text-base">第二战：激活本地精准流量（周三至周四）</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              全员店员培训与短视频 SOP 教学。围绕庐江新房交房避坑、头等舱沙发真实体验、老客真实回访，产出 3～5 条自带同城地域标签的干货与反差短视频。
+            </p>
+          </div>
+        </div>
+
+        <!-- Task 3 -->
+        <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 flex items-start gap-4">
+          <div class="w-6 h-6 rounded-full bg-brand-gold/20 text-brand-gold flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
+            3
+          </div>
+          <div class="space-y-1">
+            <h4 class="font-bold text-white text-sm sm:text-base">第三战：打通进店与核销闭环（周五至周末）</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              优化后台商品货架，上架低门槛“到店试坐特权卡/皮具保养礼”。跑通“线上刷到老板娘 → 私信/领券 → 到店体验 → 现场核销成单”全链路，彻底终结 0 核销历史。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Team Roles Section -->
+    <div class="glass-card p-6 space-y-4">
+      <h3 class="text-base font-bold text-white flex items-center gap-2">
+        <i class="ph-bold ph-users-three text-brand-gold"></i>
+        陪跑团队现场分工
+      </h3>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+        <div class="bg-slate-900/70 p-3 rounded-lg border border-slate-800">
+          <div class="text-xs text-brand-gold font-bold">郭总</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">战略总控 · 操盘主理</div>
+        </div>
+        <div class="bg-slate-900/70 p-3 rounded-lg border border-slate-800">
+          <div class="text-xs text-brand-gold font-bold">谢来</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">短视频总监 · 镜头视觉</div>
+        </div>
+        <div class="bg-slate-900/70 p-3 rounded-lg border border-slate-800">
+          <div class="text-xs text-brand-gold font-bold">于美萱 (小美)</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">专业主播 · 表现力赋能</div>
+        </div>
+        <div class="bg-slate-900/70 p-3 rounded-lg border border-slate-800">
+          <div class="text-xs text-brand-gold font-bold">赵可</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">门店对接 · 后台管理运营</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center py-6 text-xs text-slate-500 border-t border-slate-800/60 space-y-1">
+      <p>芝华仕头等舱沙发（物宝家具城店） · 数字化运营陪跑专案</p>
+      <p class="text-[11px]">© 2026 陪跑战队 · 敏华体系实战赋能</p>
+    </footer>
+
+  </main>
+
+  <!-- ECharts Script -->
+  <script>
+    // Initialize Funnel Chart
+    const funnelDom = document.getElementById('chart-funnel');
+    const funnelChart = echarts.init(funnelDom);
+    const funnelOption = {
+      backgroundColor: 'transparent',
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: { type: 'shadow' }
+      },
+      grid: {
+        top: '15%',
+        left: '3%',
+        right: '4%',
+        bottom: '10%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        data: ['意向领券金额', '实际到店核销', '退款流失金额'],
+        axisLine: { lineStyle: { color: '#334155' } },
+        axisLabel: { color: '#94A3B8', fontSize: 11 }
+      },
+      yAxis: {
+        type: 'value',
+        axisLine: { show: false },
+        splitLine: { lineStyle: { color: '#1E293B' } },
+        axisLabel: { color: '#94A3B8', formatter: '¥{value}' }
+      },
+      series: [
+        {
+          name: '金额 (元)',
+          type: 'bar',
+          barWidth: '40%',
+          data: [
+            { value: 7615, itemStyle: { color: '#D4AF37', borderRadius: [6, 6, 0, 0] } },
+            { value: 0, itemStyle: { color: '#EF4444', borderRadius: [6, 6, 0, 0] } },
+            { value: 7615, itemStyle: { color: '#64748B', borderRadius: [6, 6, 0, 0] } }
+          ],
+          label: {
+            show: true,
+            position: 'top',
+            formatter: function(params) {
+              return params.value === 0 ? '¥0 (0%核销)' : '¥' + params.value;
+            },
+            color: '#F8FAFC',
+            fontSize: 11,
+            fontWeight: 'bold'
+          }
+        }
+      ]
+    };
+    funnelChart.setOption(funnelOption);
+
+    // Initialize Growth Chart
+    const growthDom = document.getElementById('chart-growth');
+    const growthChart = echarts.init(growthDom);
+    const growthOption = {
+      backgroundColor: 'transparent',
+      tooltip: {
+        trigger: 'axis'
+      },
+      grid: {
+        top: '15%',
+        left: '3%',
+        right: '4%',
+        bottom: '10%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        data: ['当前现状 (0单)', '月成1单', '月成3单', '月成5单'],
+        axisLine: { lineStyle: { color: '#334155' } },
+        axisLabel: { color: '#94A3B8', fontSize: 11 }
+      },
+      yAxis: {
+        type: 'value',
+        axisLine: { show: false },
+        splitLine: { lineStyle: { color: '#1E293B' } },
+        axisLabel: { color: '#94A3B8', formatter: '¥{value}' }
+      },
+      series: [
+        {
+          name: '月度流水增量',
+          type: 'line',
+          smooth: true,
+          symbolSize: 8,
+          lineStyle: { width: 3, color: '#10B981' },
+          itemStyle: { color: '#10B981' },
+          areaStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: 'rgba(16, 185, 129, 0.35)' },
+              { offset: 1, color: 'rgba(16, 185, 129, 0.0)' }
+            ])
+          },
+          data: [
+            { value: 0 },
+            { value: 8102 },
+            { value: 24306 },
+            { value: 40510 }
+          ],
+          label: {
+            show: true,
+            position: 'top',
+            formatter: '¥{c}',
+            color: '#6EE7B7',
+            fontSize: 11,
+            fontWeight: 'bold'
+          }
+        }
+      ]
+    };
+    growthChart.setOption(growthOption);
+
+    // Responsive resize
+    window.addEventListener('resize', () => {
+      funnelChart.resize();
+      growthChart.resize();
+    });
+  </script>
+</body>
+</html>
