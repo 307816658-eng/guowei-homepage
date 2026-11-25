@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0B1120;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 24px;
+      width: 760px;
+      height: 440px;
+      overflow: hidden;
+    }
+    .card {
+      background: #161F36;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      border-radius: 16px;
+      padding: 24px;
+      height: 100%;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .title-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .dot {
+      width: 10px;
+      height: 10px;
+      background: #10B981;
+      border-radius: 50%;
+    }
+    .title {
+      color: #FFFFFF;
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .badge {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #34D399;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+    .desc {
+      color: #94A3B8;
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+    #chart {
+      width: 710px;
+      height: 290px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="header">
+      <div class="title-box">
+        <div class="dot"></div>
+        <div class="title">庐江本地 IP 激活收益测算（客单价 ¥8,102）</div>
+      </div>
+      <div class="badge">高客单红利 · 极低转化门槛</div>
+    </div>
+    <div class="desc">测算逻辑：无需庞大泛流量，只要打造本地信任人设，每月新增3~5单即可大幅提升门店毛利</div>
+    <div id="chart"></div>
+  </div>
+
+  <script>
+    const chart = echarts.init(document.getElementById('chart'), null, { devicePixelRatio: 2 });
+    chart.setOption({
+      backgroundColor: 'transparent',
+      animation: false,
+      grid: {
+        top: '18%',
+        left: '4%',
+        right: '4%',
+        bottom: '8%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        data: ['当前现状 (0单)', '月成 1 单', '月成 3 单', '月成 5 单'],
+        axisLine: { lineStyle: { color: '#334155' } },
+        axisLabel: { color: '#E2E8F0', fontSize: 13, fontWeight: 'bold' }
+      },
+      yAxis: {
+        type: 'value',
+        axisLine: { show: false },
+        splitLine: { lineStyle: { color: '#1E293B' } },
+        axisLabel: { color: '#94A3B8', formatter: '¥{value}' }
+      },
+      series: [
+        {
+          name: '月度新增流水',
+          type: 'line',
+          smooth: true,
+          symbolSize: 10,
+          lineStyle: { width: 4, color: '#10B981' },
+          itemStyle: { color: '#10B981', borderWidth: 2, borderColor: '#FFFFFF' },
+          areaStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: 'rgba(16, 185, 129, 0.4)' },
+              { offset: 1, color: 'rgba(16, 185, 129, 0.02)' }
+            ])
+          },
+          data: [
+            { value: 0 },
+            { value: 8102 },
+            { value: 24306 },
+            { value: 40510 }
+          ],
+          label: {
+            show: true,
+            position: 'top',
+            formatter: '月增 ¥{c}',
+            color: '#6EE7B7',
+            fontSize: 13,
+            fontWeight: 'bold',
+            offset: [0, -6]
+          }
+        }
+      ]
+    });
+  </script>
+</body>
+</html>
